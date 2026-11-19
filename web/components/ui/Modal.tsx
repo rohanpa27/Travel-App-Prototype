@@ -7,14 +7,20 @@ import { X } from "lucide-react";
 export function Modal({ open, onClose, title, children }: { open: boolean; onClose: () => void; title: string; children: React.ReactNode }) {
   const ref = useRef<HTMLDivElement>(null);
   const prev = useRef<Element | null>(null);
+  // Callers pass inline arrow functions; keep the latest one in a ref so the effect below runs only on open/close.
+  const closeRef = useRef(onClose);
+  useEffect(() => {
+    closeRef.current = onClose;
+  });
 
   useEffect(() => {
     if (!open) return;
     prev.current = document.activeElement;
     const el = ref.current;
-    el?.focus();
+    // Respect an autoFocus field inside the dialog; otherwise focus the dialog itself.
+    if (el && !el.contains(document.activeElement)) el.focus();
     const onKey = (e: KeyboardEvent) => {
-      if (e.key === "Escape") onClose();
+      if (e.key === "Escape") closeRef.current();
       if (e.key === "Tab" && el) {
         const f = el.querySelectorAll<HTMLElement>('a[href],button:not([disabled]),input,select,textarea,[tabindex]:not([tabindex="-1"])');
         if (!f.length) return;
@@ -31,7 +37,7 @@ export function Modal({ open, onClose, title, children }: { open: boolean; onClo
       document.body.style.overflow = "";
       (prev.current as HTMLElement | null)?.focus?.();
     };
-  }, [open, onClose]);
+  }, [open]);
 
   if (!open) return null;
   return (
