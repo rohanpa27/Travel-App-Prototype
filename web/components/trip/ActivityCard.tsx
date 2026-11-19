@@ -1,11 +1,11 @@
 "use client";
 
 import Link from "next/link";
-import { CalendarClock, Clock, DollarSign, MessageCircleQuestion, PartyPopper, Users } from "lucide-react";
+import { AlertTriangle, CalendarClock, Clock, DollarSign, MessageCircleQuestion, PartyPopper, Users } from "lucide-react";
 import type { Activity } from "@/lib/types";
 import { ROUTES } from "@/lib/constants";
 import { useAppState } from "@/lib/store";
-import { responseOf, tally } from "@/lib/selectors";
+import { conflictsFor, responseOf, tally } from "@/lib/selectors";
 import { money, timeLabel } from "@/lib/format";
 import { AvatarStack } from "@/components/ui/Avatar";
 import { CategoryIcon } from "./CategoryIcon";
@@ -18,6 +18,7 @@ export function ActivityCard({ activity }: { activity: Activity }) {
   const mine = responseOf(s, activity.id, s.currentUserId);
   const time = activity.timeStatus === "tbd" ? "Time TBD" : `${timeLabel(activity.startTime)}${activity.endTime ? ` to ${timeLabel(activity.endTime)}` : ""}`;
   const href = `${ROUTES.activity}?id=${activity.id}`;
+  const conflicts = conflictsFor(s, activity);
 
   return (
     <article className="rounded-card border border-line bg-white p-4 shadow-soft md:p-5">
@@ -56,6 +57,13 @@ export function ActivityCard({ activity }: { activity: Activity }) {
         <p className="mt-2 flex items-center gap-1.5 text-sm font-semibold">
           <Users className="size-4" aria-hidden />
           {t.full ? <span className="text-[#8a1c0c]">Full: {t.yes.length} of {t.capacity} spots taken</span> : t.nearFull ? <span className="text-[#8a5a00]">Almost full: {t.yes.length} of {t.capacity} spots taken</span> : t.enoughInterest ? <span className="text-[#1e6b3a]">Enough interest to book</span> : <span className="text-ink-soft">Needs a few more yeses before booking</span>}
+        </p>
+      )}
+
+      {conflicts.length > 0 && (
+        <p className="mt-2 flex items-start gap-1.5 rounded-xl bg-sun-soft px-3 py-2 text-sm font-semibold">
+          <AlertTriangle className="mt-0.5 size-4 shrink-0" aria-hidden />
+          <span>Overlaps with {conflicts.map((c) => c.title).join(" and ")}. You may need to choose.</span>
         </p>
       )}
 

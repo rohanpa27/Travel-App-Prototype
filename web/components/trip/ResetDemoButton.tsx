@@ -14,7 +14,7 @@ export function ResetDemoButton() {
     <>
       <Button variant="danger" onClick={() => setOpen(true)}><RotateCcw className="size-4" aria-hidden />Reset demo</Button>
       <Modal open={open} onClose={() => setOpen(false)} title="Reset the demo?">
-        <p>This clears everything you changed in this browser and brings back the original Chicago Birthday Weekend.</p>
+        <p>This clears everything you changed in this browser, removes any trips you created, and brings back the original demo trips.</p>
         <div className="mt-5 flex gap-2">
           <Button variant="danger" className="flex-1" onClick={() => { dispatch({ type: "reset" }); setOpen(false); toast("Demo reset to the original trip"); }}>Reset everything</Button>
           <Button variant="ghost" className="flex-1" onClick={() => setOpen(false)}>Keep my changes</Button>

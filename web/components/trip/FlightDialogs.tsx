@@ -13,11 +13,11 @@ import { Button } from "@/components/ui/Button";
 import { Field, TextArea, TextInput } from "@/components/ui/Field";
 import { Sticker } from "@/components/ui/Sticker";
 
-type Props = { open: boolean; onClose: () => void };
+type Props = { open: boolean; onClose: () => void; /** Who the flight is for. Defaults to the person using the app. */ forUserId?: string };
 
-export function ManualFlightDialog({ open, onClose }: Props) {
+export function ManualFlightDialog({ open, onClose, forUserId }: Props) {
   const s = useAppState();
-  const me = currentUser(s);
+  const me = (forUserId && s.users.find((u) => u.id === forUserId)) || currentUser(s);
   const [v, setV] = useState({ airline: "", flightNumber: "", arrivalTime: `${s.trip.startDate}T13:00`, departureTime: `${s.trip.endDate}T17:00` });
   const [errors, setErrors] = useState<FieldErrors>({});
   const dest = destinationAirport(s.trip.destination);
@@ -36,12 +36,12 @@ export function ManualFlightDialog({ open, onClose }: Props) {
         { ...base, id: newId("f"), direction: "departure", departureAirport: dest, arrivalAirport: origin, departureTime: r.data.departureTime, arrivalTime: r.data.departureTime, flightNumber: r.data.flightNumber },
       ],
     });
-    toast("Flight added. The group can see when you land.");
+    toast(me.id === s.currentUserId ? "Flight added. The group can see when you land." : `Flight added for ${me.name}`);
     onClose();
   }
 
   return (
-    <Modal open={open} onClose={onClose} title="Add a flight by hand">
+    <Modal open={open} onClose={onClose} title={me.id === s.currentUserId ? "Add a flight by hand" : `Add a flight for ${me.name}`}>
       <form onSubmit={submit} noValidate className="space-y-4">
         <p className="text-ink-soft">Flying {origin} to {dest} and back. Times are local.</p>
         <div className="grid grid-cols-2 gap-3">
@@ -56,9 +56,9 @@ export function ManualFlightDialog({ open, onClose }: Props) {
   );
 }
 
-export function ImportFlightDialog({ open, onClose }: Props) {
+export function ImportFlightDialog({ open, onClose, forUserId }: Props) {
   const s = useAppState();
-  const me = currentUser(s);
+  const me = (forUserId && s.users.find((u) => u.id === forUserId)) || currentUser(s);
   const [busy, setBusy] = useState(false);
   const sample = sampleFlightsFor(s, me, "email", () => "x");
   const text = `Your trip is confirmed\n\nOutbound: ${sample[0].airline} ${sample[0].flightNumber}\n${sample[0].departureAirport} to ${sample[0].arrivalAirport}\nArrives ${flightTime(sample[0].arrivalTime)}\n\nReturn: ${sample[1].airline} ${sample[1].flightNumber}\n${sample[1].departureAirport} to ${sample[1].arrivalAirport}\nDeparts ${flightTime(sample[1].departureTime)}`;
@@ -68,7 +68,7 @@ export function ImportFlightDialog({ open, onClose }: Props) {
     setTimeout(() => {
       dispatch({ type: "addFlights", flights: sampleFlightsFor(s, me, "email", newId) });
       setBusy(false);
-      toast("Confirmation imported (demo)");
+      toast(me.id === s.currentUserId ? "Confirmation imported (demo)" : `Confirmation imported for ${me.name} (demo)`);
       onClose();
     }, 1100);
   }

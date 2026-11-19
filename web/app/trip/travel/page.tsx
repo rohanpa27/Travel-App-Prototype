@@ -16,7 +16,7 @@ import { FindFlightsDialog, ImportFlightDialog, ManualFlightDialog } from "@/com
 export default function Travel() {
   const s = useAppState();
   const me = currentUser(s);
-  const [dialog, setDialog] = useState<null | "manual" | "import" | "find">(null);
+  const [dialog, setDialog] = useState<null | { kind: "manual" | "import" | "find"; userId: string }>(null);
   const [syncing, setSyncing] = useState(false);
 
   function connectCalendar() {
@@ -45,9 +45,9 @@ export default function Travel() {
 
       <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
         <Button variant="soft" onClick={connectCalendar} disabled={syncing} className="min-h-14 justify-start"><CalendarSync className="size-5" aria-hidden />{syncing ? "Connecting…" : s.calendarConnected ? "Google Calendar connected" : "Connect Google Calendar"}</Button>
-        <Button variant="soft" onClick={() => setDialog("import")} className="min-h-14 justify-start"><FileInput className="size-5" aria-hidden />Import confirmation</Button>
-        <Button variant="soft" onClick={() => setDialog("manual")} className="min-h-14 justify-start"><PenLine className="size-5" aria-hidden />Add manually</Button>
-        <Button onClick={() => setDialog("find")} className="min-h-14 justify-start"><Search className="size-5" aria-hidden />Find coordinated flights</Button>
+        <Button variant="soft" onClick={() => setDialog({ kind: "import", userId: me.id })} className="min-h-14 justify-start"><FileInput className="size-5" aria-hidden />Import confirmation</Button>
+        <Button variant="soft" onClick={() => setDialog({ kind: "manual", userId: me.id })} className="min-h-14 justify-start"><PenLine className="size-5" aria-hidden />Add manually</Button>
+        <Button onClick={() => setDialog({ kind: "find", userId: me.id })} className="min-h-14 justify-start"><Search className="size-5" aria-hidden />Find coordinated flights</Button>
       </div>
 
       <section aria-labelledby="arrivals" className="space-y-3">
@@ -65,7 +65,7 @@ export default function Travel() {
             return (
               <li key={u.id} className="rounded-card border border-line bg-white p-4 shadow-soft">
                 <div className="flex items-center gap-3">
-                  <Avatar user={u} size="md" />
+                  <Avatar user={u} size="md" decorative />
                   <div className="min-w-0 flex-1"><p className="text-xl font-bold">{u.name}{u.id === me.id && " (you)"}</p><p className="text-ink-soft">Flying from {u.homeCity ?? "somewhere"}{u.homeAirport && ` (${u.homeAirport})`}</p></div>
                   {state === "imported" ? <span className="inline-flex items-center gap-1 rounded-full bg-lime px-2.5 py-1 text-sm font-bold"><CheckCircle2 className="size-3.5" aria-hidden />{sourceLabel[a!.source]}</span> : <span className="rounded-full bg-coral-soft px-2.5 py-1 text-sm font-bold text-[#8a1c0c]">Needs import</span>}
                 </div>
@@ -74,16 +74,24 @@ export default function Travel() {
                     <div><dt className="text-sm text-ink-soft">Arrives</dt><dd className="font-bold">{a ? `${flightDay(a.arrivalTime)}, ${flightTime(a.arrivalTime)}` : "Not added"}</dd><dd className="text-sm text-ink-soft">{a && `${a.airline} ${a.flightNumber}`}</dd></div>
                     <div><dt className="text-sm text-ink-soft">Departs</dt><dd className="font-bold">{d ? `${flightDay(d.departureTime)}, ${flightTime(d.departureTime)}` : "Not added"}</dd><dd className="text-sm text-ink-soft">{d && `${d.airline} ${d.flightNumber}`}</dd></div>
                   </dl>
-                ) : <p className="mt-3 flex items-center gap-2 rounded-2xl bg-paper p-3 text-ink-soft"><PlaneTakeoff className="size-5" aria-hidden />No flights yet. {u.id === me.id ? "Use one of the actions above." : "Switch to this person in Profile to add theirs."}</p>}
+                ) : (
+                  <div className="mt-3 rounded-2xl bg-paper p-3">
+                    <p className="flex items-center gap-2 text-ink-soft"><PlaneTakeoff className="size-5 shrink-0" aria-hidden />No flights yet.</p>
+                    <div className="mt-2 flex flex-wrap gap-2">
+                      <Button size="sm" variant="soft" onClick={() => setDialog({ kind: "import", userId: u.id })}>Import for {u.name}</Button>
+                      <Button size="sm" variant="soft" onClick={() => setDialog({ kind: "manual", userId: u.id })}>Add flight for {u.name}</Button>
+                    </div>
+                  </div>
+                )}
               </li>
             );
           })}
         </ul>
       </section>
 
-      <ManualFlightDialog open={dialog === "manual"} onClose={() => setDialog(null)} />
-      <ImportFlightDialog open={dialog === "import"} onClose={() => setDialog(null)} />
-      <FindFlightsDialog open={dialog === "find"} onClose={() => setDialog(null)} />
+      <ManualFlightDialog key={`m-${dialog?.userId}`} open={dialog?.kind === "manual"} forUserId={dialog?.userId} onClose={() => setDialog(null)} />
+      <ImportFlightDialog key={`i-${dialog?.userId}`} open={dialog?.kind === "import"} forUserId={dialog?.userId} onClose={() => setDialog(null)} />
+      <FindFlightsDialog open={dialog?.kind === "find"} onClose={() => setDialog(null)} />
     </div>
   );
 }

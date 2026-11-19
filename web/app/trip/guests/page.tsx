@@ -35,7 +35,7 @@ export default function Guests() {
           return (
             <li key={u.id} className="rounded-card border border-line bg-white p-5 shadow-soft">
               <div className="flex items-center gap-3">
-                <Avatar user={u} size="lg" />
+                <Avatar user={u} size="lg" decorative />
                 <div className="min-w-0 flex-1">
                   <h2 className="flex flex-wrap items-center gap-2 text-2xl font-bold">{u.name}{isMe && <span className="rounded-full bg-paper-deep px-2 py-0.5 text-sm">You</span>}</h2>
                   <p className="flex items-center gap-1 text-ink-soft">{m?.role === "host" ? <><Crown className="size-4" aria-hidden />Organizer</> : "Member"}{u.homeCity && <> · from {u.homeCity}</>}</p>

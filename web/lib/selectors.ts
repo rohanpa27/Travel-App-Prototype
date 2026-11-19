@@ -75,3 +75,23 @@ export function sortActivities(list: Activity[]) {
 }
 
 export type ResponseView = ActivityResponse;
+
+const toMin = (hhmm: string) => {
+  const [h, m] = hhmm.split(":").map(Number);
+  return h * 60 + m;
+};
+const range = (a: Activity): [number, number] | undefined => (a.startTime ? [toMin(a.startTime), a.endTime ? toMin(a.endTime) : toMin(a.startTime) + 120] : undefined);
+
+/** Other plans on the same day whose time ranges overlap this one. Ideas, cancelled plans, and plans without a time are ignored. */
+export function conflictsFor(s: AppState, activity: Activity): Activity[] {
+  const mine = range(activity);
+  if (!mine || !activity.date || activity.status === "idea" || activity.status === "cancelled") return [];
+  return s.activities.filter((o) => {
+    if (o.id === activity.id || o.date !== activity.date || o.status === "idea" || o.status === "cancelled") return false;
+    const theirs = range(o);
+    return !!theirs && mine[0] < theirs[1] && theirs[0] < mine[1];
+  });
+}
+
+/** The organizer, or whoever suggested the activity, can edit it. */
+export const canEditActivity = (s: AppState, activity: Activity, userId = s.currentUserId) => isHost(s, userId) || activity.createdBy === userId;

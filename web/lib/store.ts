@@ -2,8 +2,9 @@
 
 import { useSyncExternalStore } from "react";
 import type { Activity, ActivityStatus, AppState, Flight, PaymentState, RsvpResponse, TripResponse, User } from "./types";
-import { STATE_VERSION, STORAGE_KEY } from "./constants";
-import { createSeedState } from "./seed";
+import { STATE_VERSION, STORAGE_KEY, STORE_VERSION } from "./constants";
+import { createChicagoState } from "./demo/chicago";
+import { DEFAULT_TRIP_ID, DEMO_TRIPS, createDemoTrip } from "./demo";
 
 // ---- Actions -----------------------------------------------------------------
 export type Action =
@@ -19,13 +20,15 @@ export type Action =
   | { type: "setCalendarConnected"; value: boolean }
   | { type: "recAction"; id: string; action: "save" | "dismiss" | "idea" | "propose"; activity?: Activity }
   | { type: "updateUser"; id: string; patch: Partial<User> }
-  | { type: "replaceTrip"; state: AppState }
   | { type: "reset" };
+
+/** Actions that act on the whole saved set of trips rather than the open one. */
+export type RootAction = { type: "switchTrip"; id: string } | { type: "addTrip"; state: AppState } | { type: "resetAll" } | { type: "deleteTrip"; id: string };
 
 const now = () => new Date().toISOString();
 const uid = (p: string) => `${p}-${Math.random().toString(36).slice(2, 9)}`;
 
-function reducer(s: AppState, a: Action): AppState {
+export function reducer(s: AppState, a: Action): AppState {
   switch (a.type) {
     case "join": {
       if (s.users.some((u) => u.id === a.user.id)) return s;
@@ -86,30 +89,66 @@ function reducer(s: AppState, a: Action): AppState {
     }
     case "updateUser":
       return { ...s, users: s.users.map((u) => (u.id === a.id ? { ...u, ...a.patch } : u)) };
-    case "replaceTrip":
-      return a.state;
     case "reset":
-      return createSeedState();
+      return createChicagoState();
+  }
+}
+
+// ---- Root store: every trip is saved separately, one is open ----------------------
+export type RootState = { version: number; activeId: string; trips: Record<string, AppState> };
+
+const freshRoot = (): RootState => {
+  const chicago = createChicagoState();
+  return { version: STORE_VERSION, activeId: chicago.trip.id, trips: { [chicago.trip.id]: chicago } };
+};
+
+export function rootReducer(root: RootState, a: Action | RootAction): RootState {
+  switch (a.type) {
+    case "switchTrip": {
+      if (root.trips[a.id]) return { ...root, activeId: a.id };
+      const demo = createDemoTrip(a.id);
+      return demo ? { ...root, activeId: a.id, trips: { ...root.trips, [a.id]: demo } } : root;
+    }
+    case "addTrip":
+      return { ...root, activeId: a.state.trip.id, trips: { ...root.trips, [a.state.trip.id]: a.state } };
+    case "deleteTrip": {
+      const { [a.id]: _removed, ...rest } = root.trips;
+      void _removed;
+      if (!Object.keys(rest).length) return freshRoot();
+      return { ...root, trips: rest, activeId: root.activeId === a.id ? (rest[DEFAULT_TRIP_ID] ? DEFAULT_TRIP_ID : Object.keys(rest)[0]) : root.activeId };
+    }
+    case "resetAll":
+      return freshRoot();
+    case "reset":
+      return freshRoot();
+    default: {
+      const current = root.trips[root.activeId];
+      return { ...root, trips: { ...root.trips, [root.activeId]: reducer(current, a) } };
+    }
   }
 }
 
 // ---- External store (localStorage-backed) ---------------------------------------
-const SEED = createSeedState();
-let state: AppState = SEED;
+const SEED = freshRoot();
+let state: RootState = SEED;
 let loaded = false;
 const listeners = new Set<() => void>();
 
-function load(): AppState {
+const looksLikeTrip = (t: unknown): t is AppState => !!t && typeof t === "object" && "trip" in t && Array.isArray((t as AppState).activities) && Array.isArray((t as AppState).users);
+
+function load(): RootState {
   try {
     const raw = window.localStorage.getItem(STORAGE_KEY);
     if (raw) {
-      const parsed = JSON.parse(raw) as AppState;
-      if (parsed.version === STATE_VERSION && parsed.trip && Array.isArray(parsed.activities) && Array.isArray(parsed.users)) return parsed;
+      const parsed = JSON.parse(raw);
+      if (parsed?.version === STORE_VERSION && parsed.trips && parsed.trips[parsed.activeId] && Object.values(parsed.trips).every(looksLikeTrip)) return parsed as RootState;
+      // Saved by the first prototype version: a single trip. Keep the person's changes.
+      if (looksLikeTrip(parsed) && parsed.version === STATE_VERSION) return { version: STORE_VERSION, activeId: parsed.trip.id, trips: { [parsed.trip.id]: parsed } };
     }
   } catch {
     // Storage blocked or corrupt: fall back to the seed.
   }
-  return createSeedState();
+  return freshRoot();
 }
 
 function persist() {
@@ -120,7 +159,7 @@ function persist() {
   }
 }
 
-function getSnapshot(): AppState {
+function getSnapshot(): RootState {
   if (!loaded) {
     loaded = true;
     state = load();
@@ -143,15 +182,29 @@ function subscribe(cb: () => void) {
   };
 }
 
-export function dispatch(action: Action) {
-  state = reducer(getSnapshot(), action);
+export function dispatch(action: Action | RootAction) {
+  state = rootReducer(getSnapshot(), action);
   persist();
   listeners.forEach((l) => l());
 }
 
-/** Reads the whole prototype state. Server render and first hydration use the seed. */
+const useRoot = () => useSyncExternalStore(subscribe, getSnapshot, () => SEED);
+
+/** The trip that is currently open. Server render and first hydration use the Chicago seed. */
 export function useAppState(): AppState {
-  return useSyncExternalStore(subscribe, getSnapshot, () => SEED);
+  const root = useRoot();
+  return root.trips[root.activeId];
+}
+
+export type TripSummary = { id: string; title: string; destination: string; startDate: string; endDate: string; cover: string; members: number; active: boolean };
+export type DemoOption = { id: string; label: string; blurb: string; loaded: boolean };
+
+/** Every saved trip, plus the built-in demo trips that have not been opened yet. */
+export function useTrips(): { saved: TripSummary[]; unopenedDemos: DemoOption[]; activeId: string } {
+  const root = useRoot();
+  const saved = Object.values(root.trips).map((t) => ({ id: t.trip.id, title: t.trip.title, destination: t.trip.destination, startDate: t.trip.startDate, endDate: t.trip.endDate, cover: t.trip.coverImageUrl, members: t.trip.memberIds.length, active: t.trip.id === root.activeId }));
+  const unopenedDemos = DEMO_TRIPS.filter((d) => !root.trips[d.id]).map((d) => ({ id: d.id, label: d.label, blurb: d.blurb, loaded: false }));
+  return { saved, unopenedDemos, activeId: root.activeId };
 }
 
 export function newId(prefix: string) {

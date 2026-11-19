@@ -3,8 +3,12 @@ import type { AppState, Flight, User } from "./types";
 import { getUser } from "./selectors";
 import { flightTime } from "./format";
 
-/** Demo mapping only: Chicago uses ORD, anything else gets a code made from its first letters. */
-export const destinationAirport = (destination: string) => (/chicago/i.test(destination) ? "ORD" : destination.replace(/[^a-z]/gi, "").slice(0, 3).toUpperCase().padEnd(3, "X"));
+/** Demo mapping only. Known demo cities get their real airport code; anything else gets a code made from its first letters. */
+const DEST_AIRPORTS: Record<string, string> = { chicago: "ORD", aspen: "ASE", lisbon: "LIS", austin: "AUS", denver: "DEN", miami: "MIA", nashville: "BNA", "new york": "JFK", "los angeles": "LAX", seattle: "SEA", boston: "BOS", "san francisco": "SFO" };
+export const destinationAirport = (destination: string) => {
+  const city = destination.split(",")[0].trim().toLowerCase();
+  return DEST_AIRPORTS[city] ?? destination.replace(/[^a-z]/gi, "").slice(0, 3).toUpperCase().padEnd(3, "X");
+};
 export const ARRIVAL_DATE = (s: AppState) => s.trip.startDate;
 export const DEPARTURE_DATE = (s: AppState) => s.trip.endDate;
 

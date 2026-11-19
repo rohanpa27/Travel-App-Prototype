@@ -7,7 +7,9 @@ import { dispatch, newId, useAppState } from "@/lib/store";
 import { toast } from "@/lib/toast";
 import { activitySchema, toFieldErrors, type FieldErrors } from "@/lib/schemas";
 import type { Activity } from "@/lib/types";
-import { Button } from "@/components/ui/Button";
+import { Button, ButtonLink } from "@/components/ui/Button";
+import { EmptyState } from "@/components/trip/EmptyState";
+import { canEditActivity, getUser, isHost } from "@/lib/selectors";
 import { Field, Select, TextArea, TextInput } from "@/components/ui/Field";
 
 function Form() {
@@ -15,6 +17,13 @@ function Form() {
   const id = useSearchParams().get("id");
   const s = useAppState();
   const existing = s.activities.find((a) => a.id === id);
+  const host = s.users.find((u) => u.id === s.trip.hostId);
+  if (existing && !canEditActivity(s, existing)) {
+    return <EmptyState title="Only the organizer or the person who suggested this can edit it" body={`Ask ${getUser(s, existing.createdBy)?.name ?? "them"} or ${host?.name ?? "the organizer"} to make changes. You can still vote on it.`} action={<ButtonLink href={`${ROUTES.activity}?id=${existing.id}`}>Back to the activity</ButtonLink>} />;
+  }
+  if (!existing && !s.trip.allowGuestsToPropose && !isHost(s)) {
+    return <EmptyState title="Only the organizer can add activities" body={`${host?.name ?? "The organizer"} turned off proposals for this trip. Send them your idea in the group chat.`} action={<ButtonLink href={ROUTES.itinerary}>Back to the itinerary</ButtonLink>} />;
+  }
   // Key by id so the form re-initialises if the target activity changes.
   return <ActivityForm key={existing?.id ?? "new"} existing={existing} router={router} />;
 }

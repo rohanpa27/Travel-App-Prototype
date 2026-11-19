@@ -1,6 +1,6 @@
 import { addDays, differenceInCalendarDays, format, parseISO } from "date-fns";
 import type { Activity, AppState } from "./types";
-import { createSeedState } from "./seed";
+import { createChicagoState } from "./demo/chicago";
 import { slugify } from "./format";
 import { THEMES } from "./constants";
 
@@ -34,7 +34,7 @@ const SEED_START = "2027-03-14";
 
 /** Builds a fresh single-host trip. The viewer stays the predefined host user. */
 export function buildTripState(input: NewTripInput, id: (p: string) => string): AppState {
-  const base = createSeedState();
+  const base = createChicagoState();
   const host = base.users.find((u) => u.id === base.currentUserId)!;
   const theme = THEMES.find((t) => t.id === input.themeId) ?? THEMES[0];
   const tripId = id("trip");

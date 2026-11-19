@@ -55,7 +55,7 @@ export default function CreateTrip() {
       allowGuestsToPropose: guestsPropose,
       starters: starters.filter((x) => x.title.trim()).map((x) => ({ title: x.title.trim(), category: x.category, cost: x.cost ? Number(x.cost) : undefined })),
     };
-    dispatch({ type: "replaceTrip", state: buildTripState(input, newId) });
+    dispatch({ type: "addTrip", state: buildTripState(input, newId) });
     toast("Trip created. Invite your friends!");
     router.push(ROUTES.trip);
   }

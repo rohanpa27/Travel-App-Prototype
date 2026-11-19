@@ -8,7 +8,8 @@ import { toast } from "@/lib/toast";
 import { Button } from "@/components/ui/Button";
 import { CategoryIcon } from "./CategoryIcon";
 
-export function RecommendationCard({ item }: { item: ScoredRecommendation }) {
+export function RecommendationCard({ item, headingLevel = 3 }: { item: ScoredRecommendation; headingLevel?: 2 | 3 }) {
+  const Heading = `h${headingLevel}` as const;
   const s = useAppState();
   const { rec } = item;
   const added = rec.status === "idea" || rec.status === "proposed";
@@ -24,7 +25,7 @@ export function RecommendationCard({ item }: { item: ScoredRecommendation }) {
       <div className="flex items-start gap-3">
         <CategoryIcon category={rec.category} />
         <div className="min-w-0 flex-1">
-          <h3 className="text-2xl font-bold leading-tight">{rec.title}</h3>
+          <Heading className="text-2xl font-bold leading-tight">{rec.title}</Heading>
           <p className="mt-0.5 text-base text-ink-soft">{suggestedWhen(rec)}{rec.estimatedCostPerPerson !== undefined && <> · <span className="font-semibold text-ink">{money(rec.estimatedCostPerPerson)} each</span></>}</p>
         </div>
       </div>

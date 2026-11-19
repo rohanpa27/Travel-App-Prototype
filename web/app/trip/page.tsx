@@ -65,7 +65,7 @@ export default function TripHome() {
           )}
         </div>
 
-        <aside className="space-y-8">
+        <div className="space-y-8">
           <div className="space-y-3">
             <CostSummary compact />
             <Link href={ROUTES.costs} className="inline-flex items-center gap-1 font-bold underline">See the cost breakdown <ArrowRight className="size-4" aria-hidden /></Link>
@@ -78,14 +78,14 @@ export default function TripHome() {
                 const u = getUser(s, f.userId);
                 return (
                   <li key={f.id} className="flex items-start gap-3">
-                    {u && <Avatar user={u} size="sm" />}
+                    {u && <Avatar user={u} size="sm" decorative />}
                     <p className="text-base"><span className="font-bold">{u?.name}</span> {f.text}{now && <span className="block text-sm text-ink-soft">{ago(f.at)}</span>}</p>
                   </li>
                 );
               })}
             </ul>
           </section>
-        </aside>
+        </div>
       </div>
 
       <section aria-labelledby="for-you" className="space-y-3">

@@ -10,6 +10,7 @@ import { AIRPORTS, AVATARS, INTERESTS, ROUTES } from "@/lib/constants";
 import { dispatch, newId, useAppState } from "@/lib/store";
 import { members } from "@/lib/selectors";
 import { dateRange } from "@/lib/format";
+import { useHydrated } from "@/lib/useHydrated";
 import { joinSchema, toFieldErrors, type FieldErrors } from "@/lib/schemas";
 import { Button, ButtonLink } from "@/components/ui/Button";
 import { Avatar, AvatarStack } from "@/components/ui/Avatar";
@@ -24,6 +25,7 @@ export default function InvitePage() {
   const s = useAppState();
   const router = useRouter();
   const reduce = useReducedMotion();
+  const hydrated = useHydrated();
   const [joining, setJoining] = useState(false);
   const [done, setDone] = useState(false);
   const [name, setName] = useState("");
@@ -31,6 +33,8 @@ export default function InvitePage() {
   const [airport, setAirport] = useState("");
   const [interests, setInterests] = useState<string[]>([]);
   const [errors, setErrors] = useState<FieldErrors>({});
+
+  if (!hydrated) return <div className="min-h-dvh" aria-busy="true" aria-label="Loading the invitation" />;
 
   const host = s.users.find((u) => u.id === s.trip.hostId);
   const people = members(s);
@@ -65,7 +69,7 @@ export default function InvitePage() {
 
         <section className="mt-6 rounded-xl2 border border-line bg-white p-5 shadow-soft md:p-7">
           <div className="flex items-center gap-3">
-            {host && <Avatar user={host} size="lg" />}
+            {host && <Avatar user={host} size="lg" decorative />}
             <div>
               <p className="text-lg font-bold">Hosted by {host?.name}</p>
               <p className="text-ink-soft">{s.trip.vibeTags.join(" · ")}</p>

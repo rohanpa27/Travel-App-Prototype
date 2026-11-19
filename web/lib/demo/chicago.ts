@@ -1,5 +1,5 @@
-import type { Activity, ActivityResponse, AppState, Flight, Recommendation, RsvpResponse, User } from "./types";
-import { STATE_VERSION } from "./constants";
+import type { Activity, ActivityResponse, AppState, Flight, Recommendation, RsvpResponse, User } from "../types";
+import { STATE_VERSION } from "../constants";
 
 const TRIP_ID = "trip-chicago";
 const seededAt = (hoursAgo: number) => new Date(Date.UTC(2026, 10, 18, 18, 0) - hoursAgo * 3600_000).toISOString();
@@ -70,7 +70,7 @@ export const SEED_RECOMMENDATIONS: Recommendation[] = [
   rec({ id: "r-jazz", title: "Live jazz in a basement club", description: "Two sets, small tables, and a very good house band.", category: "Nightlife", estimatedCostPerPerson: 28, suggestedDate: "2027-03-15", suggestedTime: "22:30", vibes: ["Culture", "Nightlife", "Relaxed"], interests: ["Music", "Nightlife"], similarGroupsPercent: 61, daypart: "evening" }),
 ];
 
-export function createSeedState(): AppState {
+export function createChicagoState(): AppState {
   return {
     version: STATE_VERSION,
     currentUserId: "maya",

@@ -21,7 +21,7 @@ const CHROME = findChrome();
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 
 export async function launch({ width = 390, height = 844, mobile = true, reducedMotion = false } = {}) {
-  const browser = await puppeteer.launch({ executablePath: CHROME, headless: "shell", pipe: true, protocolTimeout: 20000, args: ["--disable-gpu", "--disable-dev-shm-usage", "--no-first-run", "--disable-features=Translate,BackForwardCache"] });
+  const browser = await puppeteer.launch({ executablePath: CHROME, headless: "shell", pipe: true, protocolTimeout: 20000, args: ["--in-process-gpu", "--disable-dev-shm-usage", "--no-first-run", "--disable-features=Translate,BackForwardCache"] });
   const ctx = { browser, page: null, errors: [], results: [], width, height, mobile, reducedMotion };
   await fresh(ctx);
   return ctx;
@@ -52,9 +52,12 @@ export async function click(ctx, label, selector = "button,a,[role=radio]", with
   const found = await ctx.page.evaluate(
     (label, selector, within) => {
       const root = within ? [...document.querySelectorAll(within.sel)].find((e) => e.innerText.includes(within.has)) : document;
-      const el = root && [...root.querySelectorAll(selector)].find((e) => (e.innerText || "").trim().startsWith(label) || e.getAttribute("aria-label") === label);
+      const all = root ? [...root.querySelectorAll(selector)] : [];
+      // Prefer an exact label, then fall back to "starts with", so "Add flight" beats "Add flight for Sofia".
+      const el = all.find((e) => (e.innerText || "").trim() === label || e.getAttribute("aria-label") === label) ?? all.find((e) => (e.innerText || "").trim().startsWith(label) || (e.getAttribute("aria-label") || "").startsWith(label));
       if (!el) return false;
       el.scrollIntoView({ block: "center" });
+      el.focus(); // a real click focuses the control; DOM click() alone does not
       el.click();
       return true;
     },

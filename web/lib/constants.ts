@@ -42,7 +42,11 @@ export const AVATARS = ["sunny", "plum", "pebble", "cherry", "maya", "jordan", "
 export const AIRPORTS: Record<string, string> = {
   JFK: "New York", LGA: "New York", LAX: "Los Angeles", BOS: "Boston", AUS: "Austin", MIA: "Miami",
   SFO: "San Francisco", SEA: "Seattle", ATL: "Atlanta", DFW: "Dallas", DEN: "Denver", DCA: "Washington, DC",
+  ORD: "Chicago", PHL: "Philadelphia", PDX: "Portland", SLC: "Salt Lake City", BNA: "Nashville",
 };
 
 export const STORAGE_KEY = "trip-prototype:v1";
+/** Version of a single trip's data. */
 export const STATE_VERSION = 1;
+/** Version of the saved root object that holds every trip. */
+export const STORE_VERSION = 2;

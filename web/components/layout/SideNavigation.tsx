@@ -20,7 +20,7 @@ const items = [
 export function SideNavigation() {
   const path = usePathname().replace(/\/$/, "") || "/";
   return (
-    <aside className="sticky top-0 hidden h-dvh w-64 shrink-0 flex-col border-r border-line px-5 py-6 md:flex">
+    <aside aria-label="Trip menu" className="sticky top-0 hidden h-dvh w-64 shrink-0 flex-col border-r border-line px-5 py-6 md:flex">
       <Link href={ROUTES.home} className="font-display text-3xl font-extrabold tracking-tight">{brand.name}</Link>
       <nav aria-label="Main" className="mt-8 flex-1">
         <ul className="space-y-1">

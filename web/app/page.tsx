@@ -1,10 +1,11 @@
 import { ArrowRight, CalendarCheck, Plane, Vote } from "lucide-react";
 import { brand } from "@/lib/brand";
 import { ROUTES } from "@/lib/constants";
-import { SEED_USERS } from "@/lib/seed";
+import { SEED_USERS } from "@/lib/demo/chicago";
 import { ButtonLink } from "@/components/ui/Button";
 import { Sticker } from "@/components/ui/Sticker";
 import { AvatarStack } from "@/components/ui/Avatar";
+import { DemoTripGallery } from "@/components/trip/DemoTripGallery";
 
 const points = [
   { Icon: Vote, title: "Vote on everything", body: "Yes, Maybe, or No on each activity, so nobody gets pushed into a plan." },
@@ -57,6 +58,12 @@ export default function Landing() {
             <p className="mt-2 text-ink-soft">{body}</p>
           </div>
         ))}
+      </section>
+
+      <section aria-labelledby="demo-trips" className="mt-24">
+        <h2 id="demo-trips" className="text-4xl font-extrabold md:text-5xl">Try a trip that is already in motion</h2>
+        <p className="mt-2 max-w-xl text-lg text-ink-soft">Each demo has its own friends, votes, costs, and flights. Your changes to each one are saved separately.</p>
+        <div className="mt-6"><DemoTripGallery /></div>
       </section>
     </div>
   );

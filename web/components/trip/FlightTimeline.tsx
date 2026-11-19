@@ -36,7 +36,7 @@ export function FlightTimeline() {
             <li key={f.id} className="relative">
               <span className="absolute -left-[2.05rem] top-4 size-4 rounded-full border-4 border-paper bg-ink" aria-hidden />
               <div className="flex items-center gap-3 rounded-2xl border border-line bg-white p-3 shadow-soft">
-                <Avatar user={u} size="md" />
+                <Avatar user={u} size="md" decorative />
                 <div className="min-w-0 flex-1">
                   <p className="font-bold">{u.name} <span className="font-normal text-ink-soft">· {f.airline} {f.flightNumber}</span></p>
                   <p className="text-ink-soft">From {f.departureAirport}{together && <> · riding with {together.users.filter((x) => x.id !== u.id).map((x) => x.name).join(", ")}</>}</p>

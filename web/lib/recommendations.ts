@@ -12,16 +12,22 @@ export type ScoredRecommendation = {
 };
 
 const budgetCap = (s: AppState) => s.trip.estimatedBudget ?? 75;
-const hour = (hhmm?: string) => (hhmm ? Number(hhmm.split(":")[0]) : undefined);
-const DAYPART = { morning: [6, 12], afternoon: [12, 17], evening: [17, 24] } as const;
+const toMin = (hhmm: string) => {
+  const [h, m] = hhmm.split(":").map(Number);
+  return h * 60 + m;
+};
+const DEFAULT_LENGTH = 120;
+const DAYPART = { morning: [360, 720], afternoon: [720, 1020], evening: [1020, 1440] } as const;
 
-/** Is the suggested day-part still open for the group on that date? */
+/** Is the suggested slot still free? Compares real time ranges; activities without a time are ignored. */
 function windowOpen(s: AppState, rec: Recommendation): boolean {
   if (!rec.suggestedDate) return true;
-  const [from, to] = DAYPART[rec.daypart];
+  const [from, to] = rec.suggestedTime ? [toMin(rec.suggestedTime), toMin(rec.suggestedTime) + DEFAULT_LENGTH] : DAYPART[rec.daypart];
   return !activeActivities(s).some((a) => {
-    const h = hour(a.startTime);
-    return a.date === rec.suggestedDate && h !== undefined && h >= from && h < to && a.status !== "idea";
+    if (a.date !== rec.suggestedDate || !a.startTime || a.status === "idea") return false;
+    const start = toMin(a.startTime);
+    const end = a.endTime ? toMin(a.endTime) : start + DEFAULT_LENGTH;
+    return start < to && from < end;
   });
 }
 

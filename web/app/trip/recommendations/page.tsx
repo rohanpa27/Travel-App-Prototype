@@ -27,7 +27,7 @@ export default function Recommendations() {
       {list.length === 0 ? (
         <EmptyState icon={tab === "saved" ? <Bookmark className="size-6" aria-hidden /> : <Sparkles className="size-6" aria-hidden />} title={tab === "saved" ? "Nothing saved yet" : "You're out of suggestions"} body={tab === "saved" ? "Save a suggestion to come back to it later." : "Dismissed ideas stay gone. Reset the demo in Profile to bring them back."} />
       ) : (
-        <div className="grid gap-4 lg:grid-cols-2">{list.map((r) => <RecommendationCard key={r.rec.id} item={r} />)}</div>
+        <div className="grid gap-4 lg:grid-cols-2">{list.map((r) => <RecommendationCard key={r.rec.id} item={r} headingLevel={2} />)}</div>
       )}
     </div>
   );

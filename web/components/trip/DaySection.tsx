@@ -2,11 +2,11 @@ import type { Activity } from "@/lib/types";
 import { sortActivities } from "@/lib/selectors";
 import { ActivityCard } from "./ActivityCard";
 
-export function DaySection({ title, subtitle, activities }: { title: string; subtitle?: string; activities: Activity[] }) {
+export function DaySection({ id, title, subtitle, activities }: { id: string; title: string; subtitle?: string; activities: Activity[] }) {
   return (
-    <section aria-labelledby={`day-${title}`} className="space-y-3">
+    <section id={id} aria-labelledby={`${id}-title`} className="scroll-mt-28 space-y-3">
       <div className="flex items-baseline gap-3">
-        <h2 id={`day-${title}`} className="text-3xl font-extrabold">{title}</h2>
+        <h2 id={`${id}-title`} className="text-3xl font-extrabold">{title}</h2>
         {subtitle && <p className="text-ink-soft">{subtitle}</p>}
       </div>
       {activities.length === 0 ? (
