@@ -1,4 +1,4 @@
-// Data model for the Travely prototype (see docs/TRAVELY_PROTOTYPE_PROTOCOL.md, section 10).
+// Data model for the prototype (see docs/TRAVELY_PROTOTYPE_PROTOCOL.md, section 10).
 
 export type Budget = "budget" | "moderate" | "premium";
 export type RsvpResponse = "yes" | "maybe" | "no";

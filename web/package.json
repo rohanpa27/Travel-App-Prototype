@@ -9,9 +9,9 @@
     "lint": "eslint",
     "typecheck": "tsc --noEmit",
     "assets": "node scripts/generate-assets.mjs",
-    "check": "npm run typecheck && npm run lint && npm test && npm run build",
+    "check": "npm run typecheck && npm run lint && npm test && npm run build && npm run test:e2e",
     "test": "vitest run",
-    "test:e2e": "node tests/e2e/flows.mjs",
+    "test:e2e": "node tests/e2e/run-all.mjs",
     "preview": "serve out -l 4173"
   },
   "dependencies": {
