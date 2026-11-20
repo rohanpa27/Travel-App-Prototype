@@ -4,6 +4,7 @@ import { BookmarkPlus, Lightbulb, Send, Sparkles, X, Check } from "lucide-react"
 import { dispatch, newId, useAppState } from "@/lib/store";
 import { recommendationToActivity, suggestedWhen, type ScoredRecommendation } from "@/lib/recommendations";
 import { money } from "@/lib/format";
+import { costsOn } from "@/lib/selectors";
 import { toast } from "@/lib/toast";
 import { Button } from "@/components/ui/Button";
 import { CategoryIcon } from "./CategoryIcon";
@@ -26,7 +27,7 @@ export function RecommendationCard({ item, headingLevel = 3 }: { item: ScoredRec
         <CategoryIcon category={rec.category} />
         <div className="min-w-0 flex-1">
           <Heading className="text-2xl font-bold leading-tight">{rec.title}</Heading>
-          <p className="mt-0.5 text-base text-ink-soft">{suggestedWhen(rec)}{rec.estimatedCostPerPerson !== undefined && <> · <span className="font-semibold text-ink">{money(rec.estimatedCostPerPerson)} each</span></>}</p>
+          <p className="mt-0.5 text-base text-ink-soft">{suggestedWhen(rec)}{costsOn(s) && rec.estimatedCostPerPerson !== undefined && <> · <span className="font-semibold text-ink">{money(rec.estimatedCostPerPerson)} each</span></>}</p>
         </div>
       </div>
       <p className="mt-3">{rec.description}</p>

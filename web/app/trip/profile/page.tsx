@@ -4,12 +4,13 @@ import { useState } from "react";
 import { Check, Eye } from "lucide-react";
 import { AIRPORTS, AVATARS, INTERESTS } from "@/lib/constants";
 import { dispatch, useAppState } from "@/lib/store";
-import { currentUser, members } from "@/lib/selectors";
+import { costsOn, currentUser, isHost, members } from "@/lib/selectors";
 import { toast } from "@/lib/toast";
 import { Avatar } from "@/components/ui/Avatar";
 import { Button } from "@/components/ui/Button";
 import { Chip, Field, Select, TextInput } from "@/components/ui/Field";
 import { ResetDemoButton } from "@/components/trip/ResetDemoButton";
+import { CostsToggle } from "@/components/trip/CostsToggle";
 import type { Budget } from "@/lib/types";
 
 export default function Profile() {
@@ -34,6 +35,15 @@ export default function Profile() {
             </li>
           ))}
         </ul>
+      </section>
+      <section aria-labelledby="trip-settings" className="space-y-3">
+        <h2 id="trip-settings" className="text-3xl font-extrabold">Trip settings</h2>
+        <CostsToggle
+          checked={costsOn(s)}
+          disabled={!isHost(s)}
+          onChange={(value) => { dispatch({ type: "setShowCosts", value }); toast(value ? "Costs turned on" : "Costs turned off. Saved prices are kept."); }}
+          hint={isHost(s) ? "Show prices, your share, and who has paid. Turn off to plan without any money. Saved prices come back if you turn it on again." : "Only the organizer can change this. Switch to the organizer above to try it."}
+        />
       </section>
       <section className="space-y-3 border-t border-line pt-6">
         <h2 className="text-3xl font-extrabold">Demo controls</h2>
@@ -71,7 +81,7 @@ function Editor() {
       </fieldset>
       <div className="grid gap-4 sm:grid-cols-2">
         <Field label="Flying from"><Select value={me.homeAirport ?? ""} onChange={(e) => dispatch({ type: "updateUser", id: me.id, patch: { homeAirport: e.target.value || undefined, homeCity: e.target.value ? AIRPORTS[e.target.value] : undefined } })}><option value="">Not set</option>{Object.entries(AIRPORTS).map(([c, city]) => <option key={c} value={c}>{city} ({c})</option>)}</Select></Field>
-        <Field label="Spending style"><Select value={me.budgetPreference ?? ""} onChange={(e) => dispatch({ type: "updateUser", id: me.id, patch: { budgetPreference: (e.target.value || undefined) as Budget | undefined } })}><option value="">No preference</option><option value="budget">Budget-friendly</option><option value="moderate">Moderate</option><option value="premium">Treat ourselves</option></Select></Field>
+        {costsOn(s) && <Field label="Spending style"><Select value={me.budgetPreference ?? ""} onChange={(e) => dispatch({ type: "updateUser", id: me.id, patch: { budgetPreference: (e.target.value || undefined) as Budget | undefined } })}><option value="">No preference</option><option value="budget">Budget-friendly</option><option value="moderate">Moderate</option><option value="premium">Treat ourselves</option></Select></Field>}
       </div>
       <fieldset>
         <legend className="mb-2 text-sm font-bold">Interests (these shape your group&apos;s suggestions)</legend>

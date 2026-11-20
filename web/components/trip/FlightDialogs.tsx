@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { Mail, Search, Sparkles } from "lucide-react";
 import { dispatch, newId, useAppState } from "@/lib/store";
-import { currentUser } from "@/lib/selectors";
+import { costsOn, currentUser } from "@/lib/selectors";
 import { findCoordinatedFlights, optionToFlights, sampleFlightsFor, destinationAirport } from "@/lib/flights";
 import { flightTime, money } from "@/lib/format";
 import { flightSchema, toFieldErrors, type FieldErrors } from "@/lib/schemas";
@@ -109,7 +109,7 @@ export function FindFlightsDialog({ open, onClose }: Props) {
             <li key={o.id} className={`rounded-card border-2 p-4 ${o.recommended ? "border-ink bg-lime" : "border-line bg-white"}`}>
               <div className="flex items-baseline justify-between gap-2">
                 <p className="text-xl font-bold">{o.airline} {o.flightNumber}</p>
-                <p className="text-2xl font-extrabold">{money(o.price)}</p>
+                {costsOn(s) && <p className="text-2xl font-extrabold">{money(o.price)}</p>}
               </div>
               <p className="text-base">{o.departureAirport} {flightTime(o.departureTime)} to {flightTime(o.arrivalTime)}</p>
               <p className="mt-2 flex items-start gap-1.5 text-base font-semibold">{o.recommended && <Sparkles className="mt-0.5 size-4 shrink-0" aria-hidden />}{o.why}</p>

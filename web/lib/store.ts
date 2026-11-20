@@ -18,6 +18,7 @@ export type Action =
   | { type: "setPayment"; activityId: string; userId: string; state: PaymentState }
   | { type: "addFlights"; flights: Flight[] }
   | { type: "setCalendarConnected"; value: boolean }
+  | { type: "setShowCosts"; value: boolean }
   | { type: "recAction"; id: string; action: "save" | "dismiss" | "idea" | "propose"; activity?: Activity }
   | { type: "updateUser"; id: string; patch: Partial<User> }
   | { type: "reset" };
@@ -79,6 +80,8 @@ export function reducer(s: AppState, a: Action): AppState {
       const replaced = s.flights.filter((f) => !a.flights.some((n) => n.userId === f.userId && n.direction === f.direction));
       return { ...s, flights: [...replaced, ...a.flights] };
     }
+    case "setShowCosts":
+      return { ...s, trip: { ...s.trip, showCosts: a.value } };
     case "setCalendarConnected":
       return { ...s, calendarConnected: a.value };
     case "recAction": {

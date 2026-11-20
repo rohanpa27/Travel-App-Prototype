@@ -12,3 +12,5 @@ archive/   Restore point: web-v1-baseline.zip is the first approved version
 The product name is set in one file, `web/lib/brand.ts`, so switching between Travely and Joliday is a one-line change.
 
 The first approved version is saved two ways, see `docs/CHANGELOG.md` for how to go back to it: a git tag named `v1-baseline` and `archive/web-v1-baseline.zip`.
+
+Live site: https://rohanpa27.github.io/Travel-App-Prototype/ (set up once under Settings > Pages, see `docs/HOSTING_PLAN.md`). To work on it with others, see `CONTRIBUTING.md`.

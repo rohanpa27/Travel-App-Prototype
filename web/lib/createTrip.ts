@@ -15,6 +15,7 @@ export type NewTripInput = {
   themeId: string;
   visibility: "invite_only" | "anyone_with_link";
   allowGuestsToPropose: boolean;
+  showCosts?: boolean;
   starters: { title: string; category: string; cost?: number }[];
 };
 
@@ -49,7 +50,7 @@ export function buildTripState(input: NewTripInput, id: (p: string) => string): 
     title: st.title,
     category: st.category,
     timeStatus: "tbd",
-    estimatedCostPerPerson: st.cost,
+    estimatedCostPerPerson: input.showCosts === false ? undefined : st.cost,
     status: "idea",
   }));
 
@@ -67,11 +68,12 @@ export function buildTripState(input: NewTripInput, id: (p: string) => string): 
       coverImageUrl: theme.cover,
       themeColor: theme.color,
       vibeTags: input.vibeTags,
-      estimatedBudget: input.estimatedBudget,
+      estimatedBudget: input.showCosts === false ? undefined : input.estimatedBudget,
       hostId: host.id,
       memberIds: [host.id],
       visibility: input.visibility,
       allowGuestsToPropose: input.allowGuestsToPropose,
+      showCosts: input.showCosts !== false,
     },
     memberships: [{ tripId, userId: host.id, role: "host", tripResponse: "going" }],
     activities: starters,

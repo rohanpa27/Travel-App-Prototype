@@ -1,6 +1,15 @@
 # Changelog
 
-## v2 (current)
+## v3 (current)
+
+Everything in v2 still works. The demo trips look the same because costs stay on for them.
+
+- **Costs are optional.** A per-trip "Track costs" switch (Profile > Trip settings, organizer only, and in the create-trip flow). When off, every price, share, total, payment label and budget is hidden, including on the activity form, flight options and suggestions. Saved prices are kept and come back when the switch is turned on.
+- **No cost needed to propose an activity.** The cost field is labeled optional and can be left empty, with costs on or off.
+- **Hosting on GitHub Pages**: deploy workflow, base-path support, `docs/HOSTING_PLAN.md`, `CONTRIBUTING.md`.
+- Tests: 77 unit tests, and a new browser suite for the costs setting. Browser tests can also run against the hosted build.
+
+## v2
 
 Everything in v1 still works exactly as before. Added on top:
 

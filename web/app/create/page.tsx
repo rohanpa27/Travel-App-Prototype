@@ -12,6 +12,8 @@ import { toast } from "@/lib/toast";
 import { toFieldErrors, tripBasicsSchema, type FieldErrors } from "@/lib/schemas";
 import { Button } from "@/components/ui/Button";
 import { Chip, Field, Select, TextArea, TextInput } from "@/components/ui/Field";
+import { CostsToggle } from "@/components/trip/CostsToggle";
+import { asset } from "@/lib/paths";
 
 const STEPS = ["The basics", "The vibe", "First ideas"];
 type Starter = { title: string; category: string; cost: string };
@@ -26,6 +28,7 @@ export default function CreateTrip() {
   const [themeId, setThemeId] = useState<string>(THEMES[0].id);
   const [visibility, setVisibility] = useState<"invite_only" | "anyone_with_link">("anyone_with_link");
   const [guestsPropose, setGuestsPropose] = useState(true);
+  const [showCosts, setShowCosts] = useState(true);
   const [starters, setStarters] = useState<Starter[]>([{ title: "", category: "Food", cost: "" }]);
 
   const set = (k: keyof typeof form) => (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => setForm((f) => ({ ...f, [k]: e.target.value }));
@@ -49,11 +52,12 @@ export default function CreateTrip() {
     const input: NewTripInput = {
       ...r.data,
       vibeTags: vibes,
-      estimatedBudget: Number(budget) > 0 ? Number(budget) : undefined,
+      showCosts,
+      estimatedBudget: showCosts && Number(budget) > 0 ? Number(budget) : undefined,
       themeId,
       visibility,
       allowGuestsToPropose: guestsPropose,
-      starters: starters.filter((x) => x.title.trim()).map((x) => ({ title: x.title.trim(), category: x.category, cost: x.cost ? Number(x.cost) : undefined })),
+      starters: starters.filter((x) => x.title.trim()).map((x) => ({ title: x.title.trim(), category: x.category, cost: showCosts && x.cost ? Number(x.cost) : undefined })),
     };
     dispatch({ type: "addTrip", state: buildTripState(input, newId) });
     toast("Trip created. Invite your friends!");
@@ -99,7 +103,7 @@ export default function CreateTrip() {
                 {THEMES.map((t) => (
                   <button key={t.id} type="button" aria-pressed={themeId === t.id} onClick={() => setThemeId(t.id)} className={`relative overflow-hidden rounded-2xl border-2 text-left ${themeId === t.id ? "border-ink shadow-pop" : "border-line"}`}>
                     {/* eslint-disable-next-line @next/next/no-img-element */}
-                    <img src={t.cover} alt="" className="aspect-[4/3] w-full object-cover" />
+                    <img src={asset(t.cover)} alt="" className="aspect-[4/3] w-full object-cover" />
                     <span className="block bg-white px-2.5 py-1.5 text-sm font-bold">{t.name}</span>
                     {themeId === t.id && <span className="absolute right-2 top-2 grid size-6 place-items-center rounded-full bg-lime"><Check className="size-4" aria-hidden /></span>}
                   </button>
@@ -110,7 +114,8 @@ export default function CreateTrip() {
               <legend className="mb-2 text-sm font-bold">Trip vibe</legend>
               <div className="flex flex-wrap gap-2">{VIBES.map((v) => <Chip key={v} selected={vibes.includes(v)} onClick={() => toggleVibe(v)}>{v}</Chip>)}</div>
             </fieldset>
-            <Field label="Activity budget per person" hint="A rough number helps us suggest things that fit."><TextInput inputMode="numeric" value={budget} onChange={(e) => setBudget(e.target.value.replace(/\D/g, ""))} placeholder="75" /></Field>
+            <CostsToggle checked={showCosts} onChange={setShowCosts} />
+            {showCosts && <Field label="Activity budget per person (optional)" hint="A rough number helps us suggest things that fit."><TextInput inputMode="numeric" value={budget} onChange={(e) => setBudget(e.target.value.replace(/\D/g, ""))} placeholder="75" /></Field>}
             <fieldset className="space-y-3">
               <legend className="mb-1 text-sm font-bold">Who can join?</legend>
               <Chip selected={visibility === "anyone_with_link"} onClick={() => setVisibility("anyone_with_link")}>Anyone with the link</Chip>{" "}
@@ -125,10 +130,10 @@ export default function CreateTrip() {
             <h1 className="text-5xl font-extrabold">Start with an idea or two.</h1>
             <p className="text-ink-soft">Optional. These land in your Ideas list so friends have something to vote on right away.</p>
             {starters.map((st, i) => (
-              <div key={i} className="grid gap-3 rounded-card border border-line bg-white p-4 sm:grid-cols-[1fr_8rem_6rem_auto]">
+              <div key={i} className={`grid gap-3 rounded-card border border-line bg-white p-4 ${showCosts ? "sm:grid-cols-[1fr_8rem_6rem_auto]" : "sm:grid-cols-[1fr_8rem_auto]"}`}>
                 <Field label="Idea"><TextInput value={st.title} onChange={(e) => setStarters((l) => l.map((x, j) => (j === i ? { ...x, title: e.target.value } : x)))} placeholder="Dinner at a rooftop spot" /></Field>
                 <Field label="Type"><Select value={st.category} onChange={(e) => setStarters((l) => l.map((x, j) => (j === i ? { ...x, category: e.target.value } : x)))}>{CATEGORIES.map((c) => <option key={c.id}>{c.id}</option>)}</Select></Field>
-                <Field label="$ each"><TextInput inputMode="numeric" value={st.cost} onChange={(e) => setStarters((l) => l.map((x, j) => (j === i ? { ...x, cost: e.target.value.replace(/\D/g, "") } : x)))} placeholder="40" /></Field>
+                {showCosts && <Field label="$ each (optional)"><TextInput inputMode="numeric" value={st.cost} onChange={(e) => setStarters((l) => l.map((x, j) => (j === i ? { ...x, cost: e.target.value.replace(/\D/g, "") } : x)))} placeholder="40" /></Field>}
                 {starters.length > 1 && <button type="button" aria-label="Remove idea" onClick={() => setStarters((l) => l.filter((_, j) => j !== i))} className="mt-6 grid size-11 place-items-center rounded-full hover:bg-paper-deep"><X className="size-5" aria-hidden /></button>}
               </div>
             ))}

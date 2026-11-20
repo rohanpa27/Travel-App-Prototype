@@ -9,8 +9,9 @@ import { activitySchema, toFieldErrors, type FieldErrors } from "@/lib/schemas";
 import type { Activity } from "@/lib/types";
 import { Button, ButtonLink } from "@/components/ui/Button";
 import { EmptyState } from "@/components/trip/EmptyState";
-import { canEditActivity, getUser, isHost } from "@/lib/selectors";
+import { canEditActivity, costsOn, getUser, isHost } from "@/lib/selectors";
 import { Field, Select, TextArea, TextInput } from "@/components/ui/Field";
+import { asset } from "@/lib/paths";
 
 function Form() {
   const router = useRouter();
@@ -99,8 +100,8 @@ function ActivityForm({ existing, router }: { existing?: Activity; router: Retur
       )}
       <Field label="Address"><TextInput value={v.address} onChange={text("address")} placeholder="112 E Wacker Dr, Chicago" /></Field>
       <div className="grid grid-cols-2 gap-3">
-        <Field label="Cost per person ($)" error={errors.cost}><TextInput inputMode="decimal" value={v.cost} onChange={text("cost")} placeholder="50" /></Field>
-        <Field label="Capacity" error={errors.capacity} hint="Leave empty for no limit."><TextInput inputMode="numeric" value={v.capacity} onChange={text("capacity")} placeholder="8" /></Field>
+        {costsOn(s) && <Field label="Cost per person ($, optional)" error={errors.cost} hint="Leave empty if there is no cost or you don't know yet."><TextInput inputMode="decimal" value={v.cost} onChange={text("cost")} placeholder="50" /></Field>}
+        <Field label="Capacity (optional)" error={errors.capacity} hint="Leave empty for no limit."><TextInput inputMode="numeric" value={v.capacity} onChange={text("capacity")} placeholder="8" /></Field>
       </div>
       <Field label="Link" error={errors.link}><TextInput type="url" value={v.link} onChange={text("link")} placeholder="https://" /></Field>
       <Field label="Reservation deadline"><TextInput type="date" value={v.deadline} onChange={text("deadline")} /></Field>
@@ -112,7 +113,7 @@ function ActivityForm({ existing, router }: { existing?: Activity; router: Retur
           {THEMES.map((t) => (
             <button key={t.id} type="button" aria-pressed={v.image === t.cover} aria-label={`${t.name} cover`} onClick={() => setV((x) => ({ ...x, image: t.cover }))} className={`overflow-hidden rounded-xl border-2 ${v.image === t.cover ? "border-ink shadow-pop" : "border-line"}`}>
               {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src={t.cover} alt="" className="h-12 w-16 object-cover" />
+              <img src={asset(t.cover)} alt="" className="h-12 w-16 object-cover" />
             </button>
           ))}
         </div>

@@ -24,6 +24,8 @@ npm run dev        # http://localhost:3000
 | `npm run check` | All of the above, in order |
 | `npm run preview` | Serve `out/` at http://localhost:4173 |
 
+To test the GitHub Pages build, set `NEXT_PUBLIC_BASE_PATH=/Travel-App-Prototype` for both `npm run build` and `npm run test:e2e`. See `../docs/HOSTING_PLAN.md`.
+
 Browser suites use puppeteer-core with a project-local `chrome-headless-shell` in `../.tools/browsers`. To install it once: `cd ../.tools/browsers && npx @puppeteer/browsers install chrome-headless-shell@stable`. Set `CHROME_PATH` to use another Chrome.
 
 ## Renaming the product (Travely or Joliday)
@@ -78,3 +80,7 @@ tests/
 1. Copy `lib/demo/aspen.ts`, change the data (it is built with the helpers in `lib/demo/builders.ts`).
 2. Register it in `lib/demo/index.ts`.
 3. `npm test` checks that the new trip is internally consistent.
+
+## Costs are optional
+
+Each trip has a "Track costs" switch (Profile > Trip settings, organizer only, and in the create flow). Turn it off for planning with no money: prices, shares, totals, payment labels and budgets disappear, and activities never need a cost. Saved prices are kept. Code: `costsOn()` in `lib/selectors.ts`, `showCosts` on the trip.

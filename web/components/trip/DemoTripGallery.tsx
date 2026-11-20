@@ -6,6 +6,7 @@ import { DEMO_TRIPS } from "@/lib/demo";
 import { ROUTES } from "@/lib/constants";
 import { dateRange } from "@/lib/format";
 import { dispatch } from "@/lib/store";
+import { asset } from "@/lib/paths";
 
 /** Landing-page row of demo trips. Opening one switches to it and keeps its own saved changes. */
 export function DemoTripGallery() {
@@ -16,7 +17,7 @@ export function DemoTripGallery() {
         <li key={d.id}>
           <button type="button" onClick={() => { dispatch({ type: "switchTrip", id: d.id }); router.push(ROUTES.trip); }} className="group flex h-full w-full flex-col overflow-hidden rounded-card border-2 border-ink bg-white text-left shadow-soft transition hover:-translate-y-0.5 hover:shadow-pop">
             {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src={d.preview.coverImageUrl} alt="" className="aspect-[3/2] w-full object-cover" />
+            <img src={asset(d.preview.coverImageUrl)} alt="" className="aspect-[3/2] w-full object-cover" />
             <span className="flex flex-1 flex-col p-4">
               <span className="font-display text-2xl font-extrabold leading-tight">{d.preview.title}</span>
               <span className="mt-1 text-base text-ink-soft">{d.preview.destination} · {dateRange(d.preview.startDate, d.preview.endDate)}</span>

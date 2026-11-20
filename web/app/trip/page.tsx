@@ -4,7 +4,7 @@ import Link from "next/link";
 import { ArrowRight, Plus, Sparkles } from "lucide-react";
 import { ROUTES } from "@/lib/constants";
 import { useAppState } from "@/lib/store";
-import { activeActivities, currentUser, getUser, members, pendingFor, sortActivities } from "@/lib/selectors";
+import { activeActivities, costsOn, currentUser, getUser, members, pendingFor, sortActivities } from "@/lib/selectors";
 import { scoreRecommendations } from "@/lib/recommendations";
 import { ago, dayLabel, timeLabel } from "@/lib/format";
 import { useNow } from "@/lib/useNow";
@@ -66,10 +66,12 @@ export default function TripHome() {
         </div>
 
         <div className="space-y-8">
-          <div className="space-y-3">
-            <CostSummary compact />
-            <Link href={ROUTES.costs} className="inline-flex items-center gap-1 font-bold underline">See the cost breakdown <ArrowRight className="size-4" aria-hidden /></Link>
-          </div>
+          {costsOn(s) && (
+            <div className="space-y-3">
+              <CostSummary compact />
+              <Link href={ROUTES.costs} className="inline-flex items-center gap-1 font-bold underline">See the cost breakdown <ArrowRight className="size-4" aria-hidden /></Link>
+            </div>
+          )}
 
           <section aria-labelledby="recent" className="space-y-3">
             <h2 id="recent" className="text-3xl font-extrabold">Recent activity</h2>

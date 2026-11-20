@@ -6,7 +6,7 @@ import { useSearchParams } from "next/navigation";
 import { AlertTriangle, ArrowLeft, CalendarDays, Check, ExternalLink, Link2, MapPin, Pencil, Undo2, Users, Wallet, XCircle } from "lucide-react";
 import { ROUTES } from "@/lib/constants";
 import { dispatch, useAppState } from "@/lib/store";
-import { canEditActivity, conflictsFor, getUser, isHost, paymentState, responseOf, tally } from "@/lib/selectors";
+import { canEditActivity, conflictsFor, costsOn, getUser, isHost, paymentState, responseOf, tally } from "@/lib/selectors";
 import { dayLabel, money, timeLabel } from "@/lib/format";
 import { toast } from "@/lib/toast";
 import { Button, ButtonLink } from "@/components/ui/Button";
@@ -17,6 +17,7 @@ import { RSVPControl } from "@/components/trip/RSVPControl";
 import { PaymentBadge, StatusBadge } from "@/components/trip/StatusBadge";
 import { EmptyState } from "@/components/trip/EmptyState";
 import type { RsvpResponse } from "@/lib/types";
+import { asset } from "@/lib/paths";
 
 /** One labelled fact. Keeps dt/dd directly inside a div so the description list stays valid. */
 function Fact({ Icon, label, children }: { Icon: typeof CalendarDays; label: string; children: React.ReactNode }) {
@@ -61,12 +62,12 @@ function Detail() {
 
       {a.imageUrl && (
         // eslint-disable-next-line @next/next/no-img-element
-        <img src={a.imageUrl} alt="" className="h-48 w-full rounded-card border-2 border-ink object-cover" />
+        <img src={asset(a.imageUrl)} alt="" className="h-48 w-full rounded-card border-2 border-ink object-cover" />
       )}
 
       <dl className="grid gap-4 rounded-card border border-line bg-white p-5 shadow-soft sm:grid-cols-2">
         <Fact Icon={CalendarDays} label="When">{a.date ? dayLabel(a.date) : "No day yet"}, {a.timeStatus === "tbd" ? "time TBD" : `${timeLabel(a.startTime)}${a.endTime ? ` to ${timeLabel(a.endTime)}` : ""}`}</Fact>
-        <Fact Icon={Wallet} label="Cost per person">{a.estimatedCostPerPerson !== undefined ? money(a.estimatedCostPerPerson) : "Not set"}</Fact>
+        {costsOn(s) && <Fact Icon={Wallet} label="Cost per person">{a.estimatedCostPerPerson !== undefined ? money(a.estimatedCostPerPerson) : "Not set"}</Fact>}
         {a.address && <Fact Icon={MapPin} label="Where">{a.address}</Fact>}
         {a.capacity && <Fact Icon={Users} label="Capacity">{t.yes.length} of {a.capacity} spots taken</Fact>}
         {a.reservationDeadline && <Fact Icon={CalendarDays} label="Book by">{dayLabel(a.reservationDeadline)}</Fact>}
@@ -87,7 +88,7 @@ function Detail() {
         )}
       </section>
 
-      {a.status === "confirmed" && a.estimatedCostPerPerson ? (
+      {costsOn(s) && a.status === "confirmed" && a.estimatedCostPerPerson ? (
         <section className="flex flex-wrap items-center justify-between gap-3 rounded-card border border-line bg-white p-4">
           <div className="flex items-center gap-2"><span className="font-bold">Your share</span><PaymentBadge value={myPay} /></div>
           <Button size="sm" variant="soft" onClick={() => { dispatch({ type: "setPayment", activityId: a.id, userId: s.currentUserId, state: myPay === "paid" ? "unpaid" : "paid" }); toast(myPay === "paid" ? "Marked as not paid" : "Marked as paid"); }}>{myPay === "paid" ? "Mark as not paid" : "Mark as paid"}</Button>

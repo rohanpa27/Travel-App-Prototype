@@ -5,6 +5,8 @@ export const getUser = (s: AppState, id: string): User | undefined => s.users.fi
 export const currentUser = (s: AppState): User => getUser(s, s.currentUserId) ?? s.users[0];
 export const members = (s: AppState): User[] => s.trip.memberIds.map((id) => getUser(s, id)).filter((u): u is User => !!u);
 export const isHost = (s: AppState, userId = s.currentUserId) => s.trip.hostId === userId;
+/** Whether this trip tracks money. Costs stay stored when it is off, so turning it back on restores them. */
+export const costsOn = (s: AppState) => s.trip.showCosts !== false;
 export const activeActivities = (s: AppState) => s.activities.filter((a) => a.status !== "cancelled");
 
 export function responseOf(s: AppState, activityId: string, userId: string): RsvpResponse | undefined {

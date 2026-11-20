@@ -6,6 +6,7 @@ import { ButtonLink } from "@/components/ui/Button";
 import { Sticker } from "@/components/ui/Sticker";
 import { AvatarStack } from "@/components/ui/Avatar";
 import { DemoTripGallery } from "@/components/trip/DemoTripGallery";
+import { asset } from "@/lib/paths";
 
 const points = [
   { Icon: Vote, title: "Vote on everything", body: "Yes, Maybe, or No on each activity, so nobody gets pushed into a plan." },
@@ -37,7 +38,7 @@ export default function Landing() {
         <div className="relative mx-auto w-full max-w-sm md:max-w-none" aria-hidden>
           <div className="relative rotate-[3deg] overflow-hidden rounded-xl2 border-2 border-ink bg-sun shadow-[8px_8px_0_var(--color-ink)]">
             {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src="/covers/chicago-skyline.svg" alt="" className="aspect-[4/5] w-full object-cover" />
+            <img src={asset("/covers/chicago-skyline.svg")} alt="" className="aspect-[4/5] w-full object-cover" />
             <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-ink/80 to-transparent p-5 text-white">
               <p className="font-display text-3xl font-extrabold">Chicago Birthday Weekend</p>
               <p className="font-semibold">Mar 14 to 16 · Hosted by Maya</p>

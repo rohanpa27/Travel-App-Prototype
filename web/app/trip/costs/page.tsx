@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useAppState, dispatch } from "@/lib/store";
-import { costLines, currentUser, paymentState } from "@/lib/selectors";
+import { costLines, costsOn, currentUser, isHost, paymentState } from "@/lib/selectors";
 import { money } from "@/lib/format";
 import { ROUTES } from "@/lib/constants";
 import { toast } from "@/lib/toast";
@@ -52,6 +52,19 @@ export default function Costs() {
       )}
     </section>
   );
+
+  if (!costsOn(s)) {
+    return (
+      <div className="space-y-6">
+        <h1 className="text-5xl font-extrabold">Costs</h1>
+        <EmptyState
+          title="Costs are turned off for this trip"
+          body={isHost(s) ? "Everyone is planning without prices. Turn costs back on to see shares and totals. Any costs you entered earlier are still saved." : `${s.users.find((u) => u.id === s.trip.hostId)?.name ?? "The organizer"} turned costs off for this trip. They can turn them back on in Profile.`}
+          action={isHost(s) ? <Button onClick={() => { dispatch({ type: "setShowCosts", value: true }); toast("Costs turned on"); }}>Turn costs on</Button> : undefined}
+        />
+      </div>
+    );
+  }
 
   return (
     <div className="space-y-8">

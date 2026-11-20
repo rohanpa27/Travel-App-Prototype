@@ -4,6 +4,7 @@ import { useState } from "react";
 import { Bookmark, Sparkles } from "lucide-react";
 import { useAppState } from "@/lib/store";
 import { scoreRecommendations } from "@/lib/recommendations";
+import { costsOn } from "@/lib/selectors";
 import { RecommendationCard } from "@/components/trip/RecommendationCard";
 import { EmptyState } from "@/components/trip/EmptyState";
 import { Chip } from "@/components/ui/Field";
@@ -19,7 +20,7 @@ export default function Recommendations() {
   return (
     <div className="space-y-6">
       <h1 className="text-5xl font-extrabold">For your group</h1>
-      <p className="max-w-xl text-lg text-ink-soft">Ideas matched to your trip vibe ({s.trip.vibeTags.join(", ") || "none picked"}), everyone&apos;s interests, your budget, and the gaps in your schedule. Picked by simple rules on seeded data. No AI model is involved in this demo.</p>
+      <p className="max-w-xl text-lg text-ink-soft">Ideas matched to your trip vibe ({s.trip.vibeTags.join(", ") || "none picked"}), everyone&apos;s interests, {costsOn(s) ? "your budget, " : ""}and the gaps in your schedule. Picked by simple rules on seeded data. No AI model is involved in this demo.</p>
       <div className="flex gap-2" role="group" aria-label="Filter suggestions">
         <Chip selected={tab === "new"} onClick={() => setTab("new")}>Suggested ({fresh.length})</Chip>
         <Chip selected={tab === "saved"} onClick={() => setTab("saved")}>Saved ({saved.length})</Chip>

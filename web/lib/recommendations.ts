@@ -1,5 +1,5 @@
 import type { Activity, AppState, Recommendation } from "./types";
-import { activeActivities, members, tally } from "./selectors";
+import { activeActivities, costsOn, members, tally } from "./selectors";
 import { dayLabel, listNames, money, timeLabel } from "./format";
 
 export type ScoredRecommendation = {
@@ -41,13 +41,14 @@ export function scoreRecommendations(s: AppState): ScoredRecommendation[] {
   const people = members(s);
   const accepted = acceptedCategories(s);
   const cap = budgetCap(s);
+  const useCosts = costsOn(s);
 
   return s.recommendations
     .filter((r) => r.status !== "dismissed")
     .map((rec) => {
       const vibeHits = rec.vibes.filter((v) => s.trip.vibeTags.includes(v));
       const interested = people.filter((u) => u.interests.some((i) => rec.interests.includes(i)));
-      const fitsBudget = (rec.estimatedCostPerPerson ?? 0) <= cap;
+      const fitsBudget = useCosts && (rec.estimatedCostPerPerson ?? 0) <= cap;
       const open = windowOpen(s, rec);
       const similarAccepted = accepted.has(rec.category);
 
@@ -59,7 +60,7 @@ export function scoreRecommendations(s: AppState): ScoredRecommendation[] {
       if (rec.similarGroupsPercent >= 60) reasons.push(`${rec.similarGroupsPercent}% of similar groups added it`);
       if (similarAccepted) reasons.push(`your group already said yes to ${rec.category.toLowerCase()} plans`);
 
-      const score = vibeHits.length * 3 + interested.length * 2 + (open ? 3 : -4) + (fitsBudget ? 2 : -3) + rec.similarGroupsPercent / 20 + (similarAccepted ? 1.5 : 0);
+      const score = vibeHits.length * 3 + interested.length * 2 + (open ? 3 : -4) + (useCosts ? (fitsBudget ? 2 : -3) : 0) + rec.similarGroupsPercent / 20 + (similarAccepted ? 1.5 : 0);
       const lead = reasons.slice(0, 4);
       const explanation = lead.length ? `We think your group would like this because ${joinReasons(lead)}.` : "A flexible pick that could fit anywhere in your plan.";
       return { rec, score, reasons, explanation, fits: { budget: fitsBudget, window: open } };

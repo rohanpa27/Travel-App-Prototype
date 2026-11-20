@@ -2,7 +2,7 @@
 
 import { Crown, Plane } from "lucide-react";
 import { useAppState, dispatch } from "@/lib/store";
-import { confirmedCount, currentUser, members, personalCost } from "@/lib/selectors";
+import { confirmedCount, costsOn, currentUser, members, personalCost } from "@/lib/selectors";
 import { flightOf } from "@/lib/flights";
 import { flightDay, flightTime, money } from "@/lib/format";
 import { Avatar } from "@/components/ui/Avatar";
@@ -46,9 +46,9 @@ export default function Guests() {
                   </select>
                 ) : <span className={`rounded-full border-2 border-ink px-3 py-1 font-bold ${label[m.tripResponse].cls}`}>{label[m.tripResponse].text}</span>)}
               </div>
-              <dl className="mt-4 grid grid-cols-3 gap-2 rounded-2xl bg-paper p-3 text-center">
+              <dl className={`mt-4 grid gap-2 rounded-2xl bg-paper p-3 text-center ${costsOn(s) ? "grid-cols-3" : "grid-cols-2"}`}>
                 <div><dt className="text-sm text-ink-soft">Confirmed plans</dt><dd className="text-xl font-bold">{confirmedCount(s, u.id)}</dd></div>
-                <div><dt className="text-sm text-ink-soft">Est. cost</dt><dd className="text-xl font-bold">{money(cost.total)}</dd></div>
+                {costsOn(s) && <div><dt className="text-sm text-ink-soft">Est. cost</dt><dd className="text-xl font-bold">{money(cost.total)}</dd></div>}
                 <div><dt className="text-sm text-ink-soft">Interests</dt><dd className="text-sm font-bold">{u.interests.slice(0, 2).join(", ") || "None yet"}</dd></div>
               </dl>
               <p className="mt-3 flex flex-wrap items-center gap-x-4 gap-y-1 text-base">

@@ -5,6 +5,8 @@ import { usePathname } from "next/navigation";
 import { LayoutGrid, CalendarDays, Users, Wallet, Plane, Sparkles, Plus, Settings } from "lucide-react";
 import { ROUTES } from "@/lib/constants";
 import { brand } from "@/lib/brand";
+import { useAppState } from "@/lib/store";
+import { costsOn } from "@/lib/selectors";
 import { ButtonLink } from "@/components/ui/Button";
 
 const items = [
@@ -19,12 +21,13 @@ const items = [
 
 export function SideNavigation() {
   const path = usePathname().replace(/\/$/, "") || "/";
+  const showCosts = costsOn(useAppState());
   return (
     <aside aria-label="Trip menu" className="sticky top-0 hidden h-dvh w-64 shrink-0 flex-col border-r border-line px-5 py-6 md:flex">
       <Link href={ROUTES.home} className="font-display text-3xl font-extrabold tracking-tight">{brand.name}</Link>
       <nav aria-label="Main" className="mt-8 flex-1">
         <ul className="space-y-1">
-          {items.map(({ href, label, Icon }) => {
+          {items.filter((i) => showCosts || i.href !== ROUTES.costs).map(({ href, label, Icon }) => {
             const active = path === href;
             return (
               <li key={href}>

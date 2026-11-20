@@ -5,7 +5,7 @@ import { AlertTriangle, CalendarClock, Clock, DollarSign, MessageCircleQuestion,
 import type { Activity } from "@/lib/types";
 import { ROUTES } from "@/lib/constants";
 import { useAppState } from "@/lib/store";
-import { conflictsFor, responseOf, tally } from "@/lib/selectors";
+import { conflictsFor, costsOn, responseOf, tally } from "@/lib/selectors";
 import { money, timeLabel } from "@/lib/format";
 import { AvatarStack } from "@/components/ui/Avatar";
 import { CategoryIcon } from "./CategoryIcon";
@@ -38,7 +38,7 @@ export function ActivityCard({ activity }: { activity: Activity }) {
           </h3>
           <p className="mt-1 flex flex-wrap items-center gap-x-3 gap-y-0.5 text-base text-ink-soft">
             <span className="inline-flex items-center gap-1">{activity.timeStatus === "tbd" ? <CalendarClock className="size-4" aria-hidden /> : <Clock className="size-4" aria-hidden />}{time}</span>
-            {activity.estimatedCostPerPerson !== undefined && <span className="inline-flex items-center gap-0.5 font-semibold text-ink"><DollarSign className="size-4" aria-hidden />{money(activity.estimatedCostPerPerson).slice(1)} each</span>}
+            {costsOn(s) && activity.estimatedCostPerPerson !== undefined && <span className="inline-flex items-center gap-0.5 font-semibold text-ink"><DollarSign className="size-4" aria-hidden />{money(activity.estimatedCostPerPerson).slice(1)} each</span>}
           </p>
         </div>
       </div>

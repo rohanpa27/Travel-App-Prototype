@@ -9,6 +9,7 @@ import { dispatch, useTrips } from "@/lib/store";
 import { toast } from "@/lib/toast";
 import { Modal } from "@/components/ui/Modal";
 import { ButtonLink } from "@/components/ui/Button";
+import { asset } from "@/lib/paths";
 
 /** Lists every saved trip and the demo trips you haven't opened yet. Each trip keeps its own changes. */
 export function TripSwitcher({ open, onClose }: { open: boolean; onClose: () => void }) {
@@ -30,7 +31,7 @@ export function TripSwitcher({ open, onClose }: { open: boolean; onClose: () => 
           <li key={t.id} className="flex items-stretch gap-2">
             <button type="button" aria-current={t.active ? "true" : undefined} onClick={() => open_(t.id, t.title)} className={`flex min-h-16 flex-1 items-center gap-3 rounded-2xl border-2 p-2 pr-3 text-left ${t.active ? "border-ink bg-lime" : "border-line bg-white hover:border-ink/40"}`}>
               {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src={t.cover} alt="" className="size-14 shrink-0 rounded-xl border border-ink/20 object-cover" />
+              <img src={asset(t.cover)} alt="" className="size-14 shrink-0 rounded-xl border border-ink/20 object-cover" />
               <span className="min-w-0 flex-1">
                 <span className="block truncate text-lg font-bold leading-tight">{t.title}</span>
                 <span className="block truncate text-sm text-ink-soft">{t.destination} · {dateRange(t.startDate, t.endDate)}</span>
@@ -55,7 +56,7 @@ export function TripSwitcher({ open, onClose }: { open: boolean; onClose: () => 
                 <li key={d.id}>
                   <button type="button" onClick={() => open_(d.id, full.trip.title)} className="flex min-h-16 w-full items-center gap-3 rounded-2xl border-2 border-dashed border-line bg-white/60 p-2 pr-3 text-left hover:border-ink/40 hover:bg-white">
                     {/* eslint-disable-next-line @next/next/no-img-element */}
-                    <img src={full.trip.coverImageUrl} alt="" className="size-14 shrink-0 rounded-xl border border-ink/20 object-cover" />
+                    <img src={asset(full.trip.coverImageUrl)} alt="" className="size-14 shrink-0 rounded-xl border border-ink/20 object-cover" />
                     <span className="min-w-0 flex-1">
                       <span className="block truncate text-lg font-bold leading-tight">{full.trip.title}</span>
                       <span className="block text-sm text-ink-soft">{d.blurb}</span>

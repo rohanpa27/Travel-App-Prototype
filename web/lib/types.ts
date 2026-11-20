@@ -32,6 +32,8 @@ export type Trip = {
   memberIds: string[];
   visibility: "invite_only" | "anyone_with_link";
   allowGuestsToPropose: boolean;
+  /** Costs, budgets and payment labels are shown. Missing means on, so trips saved before this setting keep working. */
+  showCosts?: boolean;
 };
 
 export type Activity = {
