@@ -3,11 +3,11 @@
 import { Suspense } from "react";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
-import { AlertTriangle, ArrowLeft, CalendarDays, Check, ExternalLink, Link2, MapPin, Pencil, Undo2, Users, Wallet, XCircle } from "lucide-react";
+import { AlertTriangle, ArrowLeft, CalendarDays, CalendarPlus, Check, ExternalLink, Link2, MapPin, Pencil, Undo2, Users, Wallet, XCircle } from "lucide-react";
 import { ROUTES } from "@/lib/constants";
 import { dispatch, useAppState } from "@/lib/store";
 import { canEditActivity, conflictsFor, costsOn, getUser, isHost, paymentState, responseOf, tally } from "@/lib/selectors";
-import { dayLabel, money, timeLabel } from "@/lib/format";
+import { dayLabel, money, slugify, timeLabel } from "@/lib/format";
 import { toast } from "@/lib/toast";
 import { Button, ButtonLink } from "@/components/ui/Button";
 import { Avatar } from "@/components/ui/Avatar";
@@ -18,6 +18,7 @@ import { PaymentBadge, StatusBadge } from "@/components/trip/StatusBadge";
 import { EmptyState } from "@/components/trip/EmptyState";
 import type { RsvpResponse } from "@/lib/types";
 import { asset } from "@/lib/paths";
+import { buildIcs, downloadTextFile } from "@/lib/calendar";
 
 /** One labelled fact. Keeps dt/dd directly inside a div so the description list stays valid. */
 function Fact({ Icon, label, children }: { Icon: typeof CalendarDays; label: string; children: React.ReactNode }) {
@@ -62,7 +63,7 @@ function Detail() {
 
       {a.imageUrl && (
         // eslint-disable-next-line @next/next/no-img-element
-        <img src={asset(a.imageUrl)} alt="" className="h-48 w-full rounded-card border-2 border-ink object-cover" />
+        <img src={asset(a.imageUrl)} alt="" className="h-48 w-full rounded-card border border-ink/15 object-cover" />
       )}
 
       <dl className="grid gap-4 rounded-card border border-line bg-white p-5 shadow-soft sm:grid-cols-2">
@@ -80,7 +81,7 @@ function Detail() {
       {a.description && <p className="text-lg">{a.description}</p>}
       <MapPlaceholder address={a.address} />
 
-      <section aria-labelledby="your-answer" className="rounded-card border-2 border-ink bg-sun-soft p-5">
+      <section aria-labelledby="your-answer" className="rounded-card border border-ink/15 bg-sun-soft p-5">
         <h2 id="your-answer" className="mb-3 text-2xl font-bold">{myResponse ? "Your answer" : "Are you in?"}</h2>
         <RSVPControl activity={a} />
         {a.status !== "confirmed" && a.status !== "cancelled" && (
@@ -107,6 +108,7 @@ function Detail() {
       </section>
 
       <section aria-label="Organizer actions" className="flex flex-wrap gap-2 border-t border-line pt-5">
+        {a.date && a.status !== "cancelled" && <Button size="sm" variant="soft" onClick={() => { downloadTextFile(`${slugify(a.title) || "plan"}.ics`, buildIcs(s, { only: [a.id] })); toast(`${a.title} saved for your calendar app`); }}><CalendarPlus className="size-4" aria-hidden />Add to my calendar</Button>}
         {canEditActivity(s, a) && <ButtonLink href={`${ROUTES.activityEdit}?id=${a.id}`} variant="soft" size="sm"><Pencil className="size-4" aria-hidden />Edit</ButtonLink>}
         {host && a.status !== "confirmed" && a.status !== "cancelled" && <Button size="sm" onClick={() => { dispatch({ type: "setStatus", id: a.id, status: "confirmed" }); toast(`${a.title} confirmed`); }}><Check className="size-4" aria-hidden />Confirm for the group</Button>}
         {host && a.status === "confirmed" && <Button size="sm" variant="soft" onClick={() => { dispatch({ type: "setStatus", id: a.id, status: "proposed" }); toast("Moved back to proposed"); }}><Undo2 className="size-4" aria-hidden />Unconfirm</Button>}

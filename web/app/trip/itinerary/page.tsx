@@ -9,6 +9,7 @@ import { ButtonLink } from "@/components/ui/Button";
 import { DaySection } from "@/components/trip/DaySection";
 import { ActivityCard } from "@/components/trip/ActivityCard";
 import { EmptyState } from "@/components/trip/EmptyState";
+import { ItineraryViewToggle } from "@/components/trip/ItineraryViewToggle";
 
 export default function Itinerary() {
   const s = useAppState();
@@ -25,6 +26,7 @@ export default function Itinerary() {
         <h1 className="text-5xl font-extrabold">Itinerary</h1>
         <ButtonLink href={ROUTES.activityEdit}><Plus className="size-5" aria-hidden />Add activity</ButtonLink>
       </div>
+      <ItineraryViewToggle current="list" />
       <nav aria-label="Jump to a day" className="sticky top-[60px] z-20 -mx-4 flex gap-2 overflow-x-auto bg-paper/95 px-4 py-2 backdrop-blur lg:hidden">
         {days.map((d) => <a key={d} href={`#day-${d}`} className="min-h-10 shrink-0 rounded-full border-2 border-line bg-white px-4 py-2 text-sm font-bold">{dayShort(d)}</a>)}
         <a href="#ideas" className="min-h-10 shrink-0 rounded-full border-2 border-line bg-sky/40 px-4 py-2 text-sm font-bold">Ideas ({ideas.length})</a>

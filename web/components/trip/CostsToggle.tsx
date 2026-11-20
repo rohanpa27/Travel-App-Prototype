@@ -16,9 +16,9 @@ export function CostsToggle({ checked, onChange, disabled = false, hint }: { che
         aria-describedby="costs-toggle-hint"
         disabled={disabled}
         onClick={() => onChange(!checked)}
-        className={`relative mt-1 h-8 w-14 shrink-0 rounded-full border-2 border-ink transition-colors disabled:cursor-not-allowed disabled:opacity-50 ${checked ? "bg-lime" : "bg-paper-deep"}`}
+        className={`relative mt-1 h-8 w-14 shrink-0 rounded-full border border-ink/15 transition-colors disabled:cursor-not-allowed disabled:opacity-50 ${checked ? "bg-brand-soft" : "bg-paper-deep"}`}
       >
-        <span aria-hidden className={`absolute top-0.5 size-6 rounded-full border-2 border-ink bg-white transition-all ${checked ? "left-6" : "left-0.5"}`} />
+        <span aria-hidden className={`absolute top-0.5 size-6 rounded-full border border-ink/15 bg-white transition-all ${checked ? "left-6" : "left-0.5"}`} />
         <span className="sr-only">{checked ? "On" : "Off"}</span>
       </button>
     </div>

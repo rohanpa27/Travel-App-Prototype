@@ -2,7 +2,7 @@ import { CheckCircle2, Lightbulb, Hourglass, XCircle, CircleDollarSign } from "l
 import type { ActivityStatus, PaymentState } from "@/lib/types";
 
 const status: Record<ActivityStatus, { label: string; cls: string; Icon: typeof CheckCircle2 }> = {
-  confirmed: { label: "Confirmed", cls: "bg-lime text-ink", Icon: CheckCircle2 },
+  confirmed: { label: "Confirmed", cls: "bg-brand-soft text-ink", Icon: CheckCircle2 },
   proposed: { label: "Proposed", cls: "bg-sun-soft text-ink", Icon: Hourglass },
   idea: { label: "Idea", cls: "bg-sky/60 text-ink", Icon: Lightbulb },
   cancelled: { label: "Cancelled", cls: "bg-coral-soft text-[#8a1c0c]", Icon: XCircle },
@@ -19,7 +19,7 @@ export function StatusBadge({ value }: { value: ActivityStatus }) {
 }
 
 const pay: Record<PaymentState, { label: string; cls: string }> = {
-  paid: { label: "Paid", cls: "bg-lime text-ink" },
+  paid: { label: "Paid", cls: "bg-brand-soft text-ink" },
   unpaid: { label: "Not paid", cls: "bg-coral-soft text-[#8a1c0c]" },
   tbd: { label: "Payment TBD", cls: "bg-paper-deep text-ink-soft" },
 };

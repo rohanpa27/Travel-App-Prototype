@@ -3,7 +3,7 @@ import { click, go, launch, type } from "./lib.mjs";
 const OUT = process.env.SHOT_DIR ?? "/tmp";
 const shots = async (ctx, name) => { try { await ctx.page.screenshot({ path: `${OUT}/${name}.png`, fullPage: true }); console.log("saved", name); } catch (e) { console.log("skip", name, e.message.split("\n")[0]); } };
 const ctx = await launch({ mobile: true });
-for (const [name, path] of [["landing", "/"], ["invite", "/invite"], ["home", "/trip"], ["itinerary", "/trip/itinerary"], ["activity", "/trip/activity?id=a-boat"], ["add", "/trip/activity/edit"], ["guests", "/trip/guests"], ["costs", "/trip/costs"], ["travel", "/trip/travel"], ["recs", "/trip/recommendations"], ["more", "/trip/more"], ["profile", "/trip/profile"], ["create1", "/create"]]) {
+for (const [name, path] of [["landing", "/"], ["invite", "/invite"], ["home", "/trip"], ["itinerary", "/trip/itinerary"], ["calendar", "/trip/calendar"], ["calendar-d", "/trip/calendar?day=2027-03-15"], ["activity", "/trip/activity?id=a-boat"], ["add", "/trip/activity/edit"], ["guests", "/trip/guests"], ["costs", "/trip/costs"], ["travel", "/trip/travel"], ["recs", "/trip/recommendations"], ["more", "/trip/more"], ["profile", "/trip/profile"], ["create1", "/create"]]) {
   await go(ctx, path);
   await shots(ctx, name);
 }

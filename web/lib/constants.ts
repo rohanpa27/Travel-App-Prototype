@@ -4,6 +4,7 @@ export const ROUTES = {
   invite: "/invite",
   trip: "/trip",
   itinerary: "/trip/itinerary",
+  calendar: "/trip/calendar",
   activity: "/trip/activity",
   activityEdit: "/trip/activity/edit",
   guests: "/trip/guests",
@@ -18,14 +19,14 @@ export const VIBES = ["Foodie", "Nightlife", "Outdoors", "Relaxed", "Luxury", "B
 export const INTERESTS = ["Food", "Nightlife", "Outdoors", "Music", "Art", "Sports", "Wellness", "Shopping"] as const;
 
 export const CATEGORIES = [
-  { id: "Stay", color: "#8FD3FF" },
-  { id: "Food", color: "#FFC857" },
-  { id: "Drinks", color: "#FF8FC7" },
-  { id: "Outdoors", color: "#8EDB5A" },
-  { id: "Culture", color: "#B9A6FF" },
-  { id: "Nightlife", color: "#FF5C45" },
-  { id: "Transport", color: "#C9C3B6" },
-  { id: "Other", color: "#E7E1D4" },
+  { id: "Stay", color: "#9AD2FF" },
+  { id: "Food", color: "#FFC766" },
+  { id: "Drinks", color: "#FFA3D4" },
+  { id: "Outdoors", color: "#86E0A6" },
+  { id: "Culture", color: "#BBB0FF" },
+  { id: "Nightlife", color: "#FF7C69" },
+  { id: "Transport", color: "#CDD2E6" },
+  { id: "Other", color: "#E4E7F3" },
 ] as const;
 
 export const THEMES = [

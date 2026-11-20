@@ -99,7 +99,7 @@ export default function InvitePage() {
               {AVATARS.map((a) => (
                 <button key={a} type="button" aria-pressed={avatar === a} aria-label={`Avatar ${a.split("/").pop()?.replace(".svg", "")}`} onClick={() => setAvatar(a)} className={`relative rounded-full ${avatar === a ? "ring-4 ring-ink" : ""}`}>
                   <Avatar user={{ name: "", avatarUrl: a }} size="md" ring={false} />
-                  {avatar === a && <Check className="absolute -right-1 -top-1 size-5 rounded-full bg-lime p-0.5" aria-hidden />}
+                  {avatar === a && <Check className="absolute -right-1 -top-1 size-5 rounded-full bg-brand-soft p-0.5" aria-hidden />}
                 </button>
               ))}
             </div>
@@ -119,7 +119,7 @@ export default function InvitePage() {
       </Modal>
 
       {done && (
-        <div className="fixed inset-0 z-[75] grid place-items-center bg-lime" role="status">
+        <div className="fixed inset-0 z-[75] grid place-items-center bg-brand-soft" role="status">
           <div className="relative text-center">
             <Confetti active />
             <PartyPopper className="mx-auto size-16" aria-hidden />

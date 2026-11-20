@@ -28,7 +28,7 @@ export function ActivityCard({ activity }: { activity: Activity }) {
           <div className="flex flex-wrap items-center gap-2">
             <StatusBadge value={activity.status} />
             {t.everyoneIn && (
-              <span className="inline-flex items-center gap-1 rounded-full bg-ink px-2.5 py-1 text-sm font-bold text-lime">
+              <span className="inline-flex items-center gap-1 rounded-full bg-ink px-2.5 py-1 text-sm font-bold text-brand-soft">
                 <PartyPopper className="size-3.5" aria-hidden />Everyone&apos;s in
               </span>
             )}

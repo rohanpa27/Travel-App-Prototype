@@ -36,7 +36,7 @@ export default function Landing() {
         </div>
 
         <div className="relative mx-auto w-full max-w-sm md:max-w-none" aria-hidden>
-          <div className="relative rotate-[3deg] overflow-hidden rounded-xl2 border-2 border-ink bg-sun shadow-[8px_8px_0_var(--color-ink)]">
+          <div className="relative rotate-[3deg] overflow-hidden rounded-xl2 border border-ink/15 bg-sun shadow-pop">
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img src={asset("/covers/chicago-skyline.svg")} alt="" className="aspect-[4/5] w-full object-cover" />
             <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-ink/80 to-transparent p-5 text-white">
@@ -54,7 +54,7 @@ export default function Landing() {
       <section aria-label="How it works" className="mt-28 grid gap-5 md:grid-cols-3">
         {points.map(({ Icon, title, body }) => (
           <div key={title} className="rounded-card border border-line bg-white p-6 shadow-soft">
-            <span className="grid size-12 place-items-center rounded-2xl border-2 border-ink bg-lime"><Icon className="size-6" aria-hidden /></span>
+            <span className="grid size-12 place-items-center rounded-2xl border border-ink/15 bg-brand-soft"><Icon className="size-6" aria-hidden /></span>
             <h2 className="mt-4 text-2xl font-bold">{title}</h2>
             <p className="mt-2 text-ink-soft">{body}</p>
           </div>

@@ -67,7 +67,7 @@ export default function Travel() {
                 <div className="flex items-center gap-3">
                   <Avatar user={u} size="md" decorative />
                   <div className="min-w-0 flex-1"><p className="text-xl font-bold">{u.name}{u.id === me.id && " (you)"}</p><p className="text-ink-soft">Flying from {u.homeCity ?? "somewhere"}{u.homeAirport && ` (${u.homeAirport})`}</p></div>
-                  {state === "imported" ? <span className="inline-flex items-center gap-1 rounded-full bg-lime px-2.5 py-1 text-sm font-bold"><CheckCircle2 className="size-3.5" aria-hidden />{sourceLabel[a!.source]}</span> : <span className="rounded-full bg-coral-soft px-2.5 py-1 text-sm font-bold text-[#8a1c0c]">Needs import</span>}
+                  {state === "imported" ? <span className="inline-flex items-center gap-1 rounded-full bg-brand-soft px-2.5 py-1 text-sm font-bold"><CheckCircle2 className="size-3.5" aria-hidden />{sourceLabel[a!.source]}</span> : <span className="rounded-full bg-coral-soft px-2.5 py-1 text-sm font-bold text-[#8a1c0c]">Needs import</span>}
                 </div>
                 {a || d ? (
                   <dl className="mt-3 grid grid-cols-2 gap-2 rounded-2xl bg-paper p-3 text-base">

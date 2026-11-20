@@ -32,7 +32,7 @@ if (basePath) {
 const server = spawn(join(root, "node_modules", ".bin", "serve"), [serveDir, "-l", String(port)], { cwd: root, stdio: "ignore" });
 await new Promise((r) => setTimeout(r, 2500));
 
-const suites = ["flows", "trips", "costs", "robustness", "a11y"];
+const suites = ["flows", "trips", "costs", "calendar", "robustness", "a11y"];
 let failed = 0;
 for (const name of suites) {
   console.log(`\n=== ${name} ===`);

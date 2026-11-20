@@ -1,10 +1,10 @@
 import type { Metadata, Viewport } from "next";
-import { Bricolage_Grotesque, Figtree } from "next/font/google";
+import { Plus_Jakarta_Sans, Figtree } from "next/font/google";
 import "./globals.css";
 import { brand } from "@/lib/brand";
 import { Providers } from "@/components/ui/Providers";
 
-const display = Bricolage_Grotesque({ variable: "--font-bricolage", subsets: ["latin"], weight: ["600", "700", "800"] });
+const display = Plus_Jakarta_Sans({ variable: "--font-jakarta", subsets: ["latin"], weight: ["600", "700", "800"] });
 const sans = Figtree({ variable: "--font-figtree", subsets: ["latin"], weight: ["400", "500", "600", "700"] });
 
 export const metadata: Metadata = {
@@ -12,7 +12,7 @@ export const metadata: Metadata = {
   description: brand.promise,
 };
 
-export const viewport: Viewport = { width: "device-width", initialScale: 1, themeColor: "#f6f2ec" };
+export const viewport: Viewport = { width: "device-width", initialScale: 1, themeColor: "#f6f7fc" };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (

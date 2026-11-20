@@ -27,7 +27,7 @@ export default function Profile() {
         <ul className="grid gap-2 sm:grid-cols-2">
           {members(s).map((u) => (
             <li key={u.id}>
-              <button type="button" aria-pressed={u.id === me.id} onClick={() => { dispatch({ type: "setViewer", userId: u.id }); toast(`Now viewing as ${u.name}`); }} className={`flex min-h-14 w-full items-center gap-3 rounded-2xl border-2 p-2 pr-4 text-left font-bold ${u.id === me.id ? "border-ink bg-lime" : "border-line bg-white"}`}>
+              <button type="button" aria-pressed={u.id === me.id} onClick={() => { dispatch({ type: "setViewer", userId: u.id }); toast(`Now viewing as ${u.name}`); }} className={`flex min-h-14 w-full items-center gap-3 rounded-2xl border-2 p-2 pr-4 text-left font-bold ${u.id === me.id ? "border-ink bg-brand-soft" : "border-line bg-white"}`}>
                 <Avatar user={u} size="md" decorative />
                 <span className="flex-1">{u.name}{u.id === s.trip.hostId && <span className="font-normal text-ink-soft"> · organizer</span>}</span>
                 {u.id === me.id ? <Check className="size-5" aria-hidden /> : <Eye className="size-5 text-ink-soft" aria-hidden />}

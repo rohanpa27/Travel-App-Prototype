@@ -20,13 +20,13 @@ export function BottomNavigation() {
     <nav aria-label="Main" className="fixed inset-x-0 bottom-0 z-40 border-t border-line bg-paper/95 pb-[env(safe-area-inset-bottom)] backdrop-blur md:hidden">
       <ul className="mx-auto flex max-w-lg items-end justify-around px-2 pt-1.5">
         {items.map(({ href, label, Icon, primary }) => {
-          const active = href === ROUTES.more ? MORE_ROUTES.includes(path) : path === href;
+          const active = href === ROUTES.more ? MORE_ROUTES.includes(path) : href === ROUTES.itinerary ? path === ROUTES.itinerary || path === ROUTES.calendar : path === href;
           return (
             <li key={href}>
               <Link href={href} aria-current={active ? "page" : undefined} className={`flex min-w-16 flex-col items-center gap-0.5 rounded-2xl px-2 py-1.5 text-xs font-bold ${active ? "text-ink" : "text-ink-soft"}`}>
                 {primary ? (
-                  <span className="-mt-6 grid size-14 place-items-center rounded-full border-2 border-ink bg-lime shadow-[3px_3px_0_var(--color-ink)]">
-                    <Icon className="size-7 text-ink" aria-hidden />
+                  <span className="-mt-6 grid size-14 place-items-center rounded-full bg-brand shadow-pop">
+                    <Icon className="size-7 text-white" aria-hidden />
                   </span>
                 ) : (
                   <span className={`grid h-8 w-12 place-items-center rounded-full ${active ? "bg-ink text-paper" : ""}`}>

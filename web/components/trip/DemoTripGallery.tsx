@@ -15,7 +15,7 @@ export function DemoTripGallery() {
     <ul className="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
       {DEMO_TRIPS.map((d) => (
         <li key={d.id}>
-          <button type="button" onClick={() => { dispatch({ type: "switchTrip", id: d.id }); router.push(ROUTES.trip); }} className="group flex h-full w-full flex-col overflow-hidden rounded-card border-2 border-ink bg-white text-left shadow-soft transition hover:-translate-y-0.5 hover:shadow-pop">
+          <button type="button" onClick={() => { dispatch({ type: "switchTrip", id: d.id }); router.push(ROUTES.trip); }} className="group flex h-full w-full flex-col overflow-hidden rounded-card border border-ink/15 bg-white text-left shadow-soft transition hover:-translate-y-0.5 hover:shadow-pop">
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img src={asset(d.preview.coverImageUrl)} alt="" className="aspect-[3/2] w-full object-cover" />
             <span className="flex flex-1 flex-col p-4">

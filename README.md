@@ -9,7 +9,7 @@ archive/   Restore point: web-v1-baseline.zip is the first approved version
 .tools/    Portable Node.js and test browser (not part of the product)
 ```
 
-The product name is set in one file, `web/lib/brand.ts`, so switching between Travely and Joliday is a one-line change.
+The product is called Joliday. The name is set in one file, `web/lib/brand.ts`, so trying another name (for example Travely) is a one-line change.
 
 The first approved version is saved two ways, see `docs/CHANGELOG.md` for how to go back to it: a git tag named `v1-baseline` and `archive/web-v1-baseline.zip`.
 

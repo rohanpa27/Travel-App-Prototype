@@ -34,7 +34,7 @@ export function InviteModal({ open, onClose }: { open: boolean; onClose: () => v
   return (
     <Modal open={open} onClose={onClose} title="Invite your friends">
       <p className="text-ink-soft">Send this link to the group chat. Anyone who opens it sees the invitation and can join without an account.</p>
-      <div className="mt-4 flex items-center gap-2 rounded-2xl border-2 border-ink bg-white p-2 pl-4">
+      <div className="mt-4 flex items-center gap-2 rounded-2xl border border-ink/15 bg-white p-2 pl-4">
         <Link2 className="size-5 shrink-0 text-ink-soft" aria-hidden />
         <input readOnly value={link} aria-label="Invite link" onFocus={(e) => e.currentTarget.select()} autoFocus={manual} className="min-w-0 flex-1 bg-transparent py-2 text-base font-semibold focus:outline-none" />
         <Button onClick={copy} size="sm">

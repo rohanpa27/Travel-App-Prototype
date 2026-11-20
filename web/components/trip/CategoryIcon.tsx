@@ -7,7 +7,7 @@ export function CategoryIcon({ category, size = "md" }: { category: string; size
   const Icon = icons[category] ?? Sparkles;
   const color = CATEGORIES.find((c) => c.id === category)?.color ?? "#E7E1D4";
   return (
-    <span className={`grid shrink-0 place-items-center rounded-2xl border-2 border-ink ${size === "lg" ? "size-16" : "size-12"}`} style={{ background: color }}>
+    <span className={`grid shrink-0 place-items-center rounded-2xl border border-ink/15 ${size === "lg" ? "size-16" : "size-12"}`} style={{ background: color }}>
       <Icon className={size === "lg" ? "size-8" : "size-6"} aria-hidden />
     </span>
   );

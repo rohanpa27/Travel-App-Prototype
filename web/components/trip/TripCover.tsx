@@ -6,7 +6,7 @@ import { asset } from "@/lib/paths";
 /** Large editorial cover. `compact` is used on the trip header; the full size is for the invitation. */
 export function TripCover({ trip, compact = false, children }: { trip: Trip; compact?: boolean; children?: React.ReactNode }) {
   return (
-    <section className={`relative isolate overflow-hidden rounded-xl2 border-2 border-ink ${compact ? "min-h-48" : "min-h-[26rem] md:min-h-[32rem]"}`} style={{ background: trip.themeColor }}>
+    <section className={`relative isolate overflow-hidden rounded-xl2 border border-ink/15 ${compact ? "min-h-48" : "min-h-[26rem] md:min-h-[32rem]"}`} style={{ background: trip.themeColor }}>
       {/* eslint-disable-next-line @next/next/no-img-element */}
       <img src={asset(trip.coverImageUrl)} alt="" className="absolute inset-0 -z-10 size-full object-cover" />
       <div className="absolute inset-0 -z-10 bg-gradient-to-t from-ink/85 via-ink/45 to-ink/5" aria-hidden />

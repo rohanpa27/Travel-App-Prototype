@@ -106,7 +106,7 @@ export function FindFlightsDialog({ open, onClose }: Props) {
       ) : (
         <ul className="mt-4 space-y-3">
           {options.map((o) => (
-            <li key={o.id} className={`rounded-card border-2 p-4 ${o.recommended ? "border-ink bg-lime" : "border-line bg-white"}`}>
+            <li key={o.id} className={`rounded-card border-2 p-4 ${o.recommended ? "border-ink bg-brand-soft" : "border-line bg-white"}`}>
               <div className="flex items-baseline justify-between gap-2">
                 <p className="text-xl font-bold">{o.airline} {o.flightNumber}</p>
                 {costsOn(s) && <p className="text-2xl font-extrabold">{money(o.price)}</p>}

@@ -1,7 +1,7 @@
 // Single source of truth for the product name.
-// To switch between "Travely" and "Joliday", change BRAND_NAME only
-// (or set NEXT_PUBLIC_BRAND_NAME in .env.local). Nothing else is name-specific.
-const BRAND_NAME = process.env.NEXT_PUBLIC_BRAND_NAME ?? "Travely";
+// The product is called Joliday. To try another name (for example "Travely"), change BRAND_NAME only
+// or set NEXT_PUBLIC_BRAND_NAME in .env.local. Nothing else is name-specific.
+const BRAND_NAME = process.env.NEXT_PUBLIC_BRAND_NAME ?? "Joliday";
 
 export const brand = {
   name: BRAND_NAME,

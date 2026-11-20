@@ -9,7 +9,7 @@ import { activitySchema, toFieldErrors, type FieldErrors } from "@/lib/schemas";
 import type { Activity } from "@/lib/types";
 import { Button, ButtonLink } from "@/components/ui/Button";
 import { EmptyState } from "@/components/trip/EmptyState";
-import { canEditActivity, costsOn, getUser, isHost } from "@/lib/selectors";
+import { canEditActivity, costsOn, getUser, isHost, tripDays } from "@/lib/selectors";
 import { Field, Select, TextArea, TextInput } from "@/components/ui/Field";
 import { asset } from "@/lib/paths";
 
@@ -31,10 +31,12 @@ function Form() {
 
 function ActivityForm({ existing, router }: { existing?: Activity; router: ReturnType<typeof useRouter> }) {
   const s = useAppState();
+  const asked = useSearchParams().get("date");
+  const prefill = asked && tripDays(s).includes(asked) ? asked : s.trip.startDate;
   const [v, setV] = useState({
     title: existing?.title ?? "",
     category: existing?.category ?? "Food",
-    date: existing?.date ?? s.trip.startDate,
+    date: existing?.date ?? prefill,
     timeTbd: existing ? existing.timeStatus === "tbd" : false,
     startTime: existing?.startTime ?? "",
     endTime: existing?.endTime ?? "",

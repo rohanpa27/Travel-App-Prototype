@@ -29,7 +29,7 @@ export function TripSwitcher({ open, onClose }: { open: boolean; onClose: () => 
       <ul className="space-y-2">
         {saved.map((t) => (
           <li key={t.id} className="flex items-stretch gap-2">
-            <button type="button" aria-current={t.active ? "true" : undefined} onClick={() => open_(t.id, t.title)} className={`flex min-h-16 flex-1 items-center gap-3 rounded-2xl border-2 p-2 pr-3 text-left ${t.active ? "border-ink bg-lime" : "border-line bg-white hover:border-ink/40"}`}>
+            <button type="button" aria-current={t.active ? "true" : undefined} onClick={() => open_(t.id, t.title)} className={`flex min-h-16 flex-1 items-center gap-3 rounded-2xl border-2 p-2 pr-3 text-left ${t.active ? "border-ink bg-brand-soft" : "border-line bg-white hover:border-ink/40"}`}>
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img src={asset(t.cover)} alt="" className="size-14 shrink-0 rounded-xl border border-ink/20 object-cover" />
               <span className="min-w-0 flex-1">

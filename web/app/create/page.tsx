@@ -105,7 +105,7 @@ export default function CreateTrip() {
                     {/* eslint-disable-next-line @next/next/no-img-element */}
                     <img src={asset(t.cover)} alt="" className="aspect-[4/3] w-full object-cover" />
                     <span className="block bg-white px-2.5 py-1.5 text-sm font-bold">{t.name}</span>
-                    {themeId === t.id && <span className="absolute right-2 top-2 grid size-6 place-items-center rounded-full bg-lime"><Check className="size-4" aria-hidden /></span>}
+                    {themeId === t.id && <span className="absolute right-2 top-2 grid size-6 place-items-center rounded-full bg-brand-soft"><Check className="size-4" aria-hidden /></span>}
                   </button>
                 ))}
               </div>

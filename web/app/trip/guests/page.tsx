@@ -9,7 +9,7 @@ import { Avatar } from "@/components/ui/Avatar";
 import type { TripResponse } from "@/lib/types";
 
 const label: Record<TripResponse, { text: string; cls: string }> = {
-  going: { text: "Going", cls: "bg-lime" },
+  going: { text: "Going", cls: "bg-brand-soft" },
   maybe: { text: "Maybe", cls: "bg-sun" },
   not_going: { text: "Can't go", cls: "bg-coral-soft text-[#8a1c0c]" },
 };
@@ -41,10 +41,10 @@ export default function Guests() {
                   <p className="flex items-center gap-1 text-ink-soft">{m?.role === "host" ? <><Crown className="size-4" aria-hidden />Organizer</> : "Member"}{u.homeCity && <> · from {u.homeCity}</>}</p>
                 </div>
                 {m && (isMe ? (
-                  <select aria-label="Your trip response" value={m.tripResponse} onChange={(e) => dispatch({ type: "setTripResponse", userId: u.id, response: e.target.value as TripResponse })} className={`min-h-10 rounded-full border-2 border-ink px-3 font-bold ${label[m.tripResponse].cls}`}>
+                  <select aria-label="Your trip response" value={m.tripResponse} onChange={(e) => dispatch({ type: "setTripResponse", userId: u.id, response: e.target.value as TripResponse })} className={`min-h-10 rounded-full border border-ink/15 px-3 font-bold ${label[m.tripResponse].cls}`}>
                     <option value="going">Going</option><option value="maybe">Maybe</option><option value="not_going">Can&apos;t go</option>
                   </select>
-                ) : <span className={`rounded-full border-2 border-ink px-3 py-1 font-bold ${label[m.tripResponse].cls}`}>{label[m.tripResponse].text}</span>)}
+                ) : <span className={`rounded-full border border-ink/15 px-3 py-1 font-bold ${label[m.tripResponse].cls}`}>{label[m.tripResponse].text}</span>)}
               </div>
               <dl className={`mt-4 grid gap-2 rounded-2xl bg-paper p-3 text-center ${costsOn(s) ? "grid-cols-3" : "grid-cols-2"}`}>
                 <div><dt className="text-sm text-ink-soft">Confirmed plans</dt><dd className="text-xl font-bold">{confirmedCount(s, u.id)}</dd></div>

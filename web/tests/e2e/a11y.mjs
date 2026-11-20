@@ -4,7 +4,7 @@ import { createRequire } from "node:module";
 import { click, go, launch } from "./lib.mjs";
 
 const axeSource = readFileSync(createRequire(import.meta.url).resolve("axe-core/axe.min.js"), "utf8");
-const ROUTES = ["/", "/create", "/invite", "/trip", "/trip/itinerary", "/trip/activity?id=a-boat", "/trip/activity/edit", "/trip/guests", "/trip/costs", "/trip/travel", "/trip/recommendations", "/trip/more", "/trip/profile"];
+const ROUTES = ["/", "/create", "/invite", "/trip", "/trip/itinerary", "/trip/calendar", "/trip/calendar?day=2027-03-15", "/trip/activity?id=a-boat", "/trip/activity/edit", "/trip/guests", "/trip/costs", "/trip/travel", "/trip/recommendations", "/trip/more", "/trip/profile"];
 
 async function audit(ctx) {
   await ctx.page.evaluate(axeSource);
@@ -15,6 +15,7 @@ async function audit(ctx) {
 }
 
 const report = async (ctx, label) => {
+  await new Promise((r) => setTimeout(r, 600)); // let dialogs finish their fade-in so colors are measured at rest
   const v = await audit(ctx);
   total += 1;
   if (v.length) failed += 1;

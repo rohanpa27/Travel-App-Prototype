@@ -10,7 +10,7 @@ import { Confetti } from "./Confetti";
 import { toast } from "@/lib/toast";
 
 const options: { value: RsvpResponse; label: string; Icon: typeof Check; on: string }[] = [
-  { value: "yes", label: "Yes", Icon: Check, on: "bg-lime border-ink" },
+  { value: "yes", label: "Yes", Icon: Check, on: "bg-brand-soft border-ink" },
   { value: "maybe", label: "Maybe", Icon: HelpCircle, on: "bg-sun border-ink" },
   { value: "no", label: "No", Icon: X, on: "bg-coral border-ink text-white" },
 ];

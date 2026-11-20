@@ -19,7 +19,7 @@ export function FlightTimeline() {
   return (
     <div className="space-y-4">
       {groups.map((g) => (
-        <div key={g.users.map((u) => u.id).join("-")} className="flex items-start gap-3 rounded-card border-2 border-ink bg-lime p-4">
+        <div key={g.users.map((u) => u.id).join("-")} className="flex items-start gap-3 rounded-card border border-ink/15 bg-brand-soft p-4">
           <Car className="mt-1 size-6 shrink-0" aria-hidden />
           <div>
             <p className="text-lg font-bold">Ride share opportunity</p>

@@ -1,29 +1,29 @@
 @import "tailwindcss";
 
-/* Design tokens. Warm off-white paper, near-black ink, loud accents. */
+/* Design tokens. Cool white canvas, deep indigo ink, one confident indigo accent. */
 @theme {
-  --color-paper: #f6f2ec;
-  --color-paper-deep: #ece6dc;
-  --color-ink: #17151c;
-  --color-ink-soft: #55515e;
-  --color-line: #dcd5c8;
-  --color-lime: #d4ff3f;
-  --color-lime-deep: #a6d400;
-  --color-coral: #ff5c45;
-  --color-coral-soft: #ffd9d2;
-  --color-sky: #8fd3ff;
-  --color-sun: #ffc857;
-  --color-sun-soft: #fff0c4;
-  --color-plum: #3d2c8d;
-  --color-mint: #bff2d3;
+  --color-paper: #f6f7fc;
+  --color-paper-deep: #eaecf7;
+  --color-ink: #12122a;
+  --color-ink-soft: #565975;
+  --color-line: #e0e3f1;
+  --color-brand: #5b5bf0;
+  --color-brand-deep: #4338ca;
+  --color-brand-soft: #e6e7ff;
+  --color-coral: #ff6b57;
+  --color-coral-soft: #ffe2dd;
+  --color-sky: #8ccfff;
+  --color-sun: #ffbf4d;
+  --color-sun-soft: #fff1d3;
+  --color-mint: #c5f3e3;
 
-  --font-display: var(--font-bricolage), ui-sans-serif, system-ui, sans-serif;
+  --font-display: var(--font-jakarta), ui-sans-serif, system-ui, sans-serif;
   --font-sans: var(--font-figtree), ui-sans-serif, system-ui, sans-serif;
 
-  --radius-card: 24px;
+  --radius-card: 22px;
   --radius-xl2: 28px;
-  --shadow-soft: 0 1px 0 rgba(23, 21, 28, 0.06), 0 8px 24px -12px rgba(23, 21, 28, 0.18);
-  --shadow-pop: 4px 4px 0 var(--color-ink);
+  --shadow-soft: 0 1px 2px rgba(18, 18, 42, 0.05), 0 10px 28px -14px rgba(40, 40, 120, 0.22);
+  --shadow-pop: 0 14px 30px -12px rgba(91, 91, 240, 0.5);
 }
 
 html {
@@ -40,7 +40,7 @@ body {
 }
 
 :focus-visible {
-  outline: 3px solid var(--color-plum);
+  outline: 3px solid var(--color-brand-deep);
   outline-offset: 2px;
   border-radius: 8px;
 }

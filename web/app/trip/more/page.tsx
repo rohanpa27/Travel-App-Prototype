@@ -25,7 +25,7 @@ export default function More() {
       <ul className="space-y-3">
         <li>
           <button type="button" onClick={() => setTripsOpen(true)} className="flex w-full items-center gap-4 rounded-card border border-line bg-white p-4 text-left shadow-soft">
-            <span className="grid size-12 place-items-center rounded-2xl border-2 border-ink bg-sun"><Luggage className="size-6" aria-hidden /></span>
+            <span className="grid size-12 place-items-center rounded-2xl border border-ink/15 bg-sun"><Luggage className="size-6" aria-hidden /></span>
             <span className="flex-1"><span className="block text-xl font-bold">Switch trip</span><span className="text-ink-soft">Open another demo trip or one you made</span></span>
             <ChevronRight className="size-5" aria-hidden />
           </button>
@@ -33,7 +33,7 @@ export default function More() {
         {links.filter((l) => showCosts || l.href !== ROUTES.costs).map(({ href, label, body, Icon }) => (
           <li key={href}>
             <Link href={href} className="flex items-center gap-4 rounded-card border border-line bg-white p-4 shadow-soft">
-              <span className="grid size-12 place-items-center rounded-2xl border-2 border-ink bg-lime"><Icon className="size-6" aria-hidden /></span>
+              <span className="grid size-12 place-items-center rounded-2xl border border-ink/15 bg-brand-soft"><Icon className="size-6" aria-hidden /></span>
               <span className="flex-1"><span className="block text-xl font-bold">{label}</span><span className="text-ink-soft">{body}</span></span>
               <ChevronRight className="size-5" aria-hidden />
             </Link>

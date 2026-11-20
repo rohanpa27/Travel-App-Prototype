@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { LayoutGrid, CalendarDays, Users, Wallet, Plane, Sparkles, Plus, Settings } from "lucide-react";
+import { LayoutGrid, CalendarDays, CalendarRange, Users, Wallet, Plane, Sparkles, Plus, Settings } from "lucide-react";
 import { ROUTES } from "@/lib/constants";
 import { brand } from "@/lib/brand";
 import { useAppState } from "@/lib/store";
@@ -12,6 +12,7 @@ import { ButtonLink } from "@/components/ui/Button";
 const items = [
   { href: ROUTES.trip, label: "Overview", Icon: LayoutGrid },
   { href: ROUTES.itinerary, label: "Itinerary", Icon: CalendarDays },
+  { href: ROUTES.calendar, label: "Calendar", Icon: CalendarRange },
   { href: ROUTES.guests, label: "Guests", Icon: Users },
   { href: ROUTES.costs, label: "Costs", Icon: Wallet },
   { href: ROUTES.travel, label: "Travel", Icon: Plane },

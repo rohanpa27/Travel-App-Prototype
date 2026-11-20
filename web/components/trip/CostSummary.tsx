@@ -12,7 +12,7 @@ export function CostSummary({ compact = false }: { compact?: boolean }) {
   const group = groupCost(s);
   return (
     <section aria-label="Cost summary" className={`grid gap-3 ${compact ? "" : "sm:grid-cols-2"}`}>
-      <div className="rounded-card border-2 border-ink bg-lime p-5">
+      <div className="rounded-card border border-ink/15 bg-brand-soft p-5">
         <p className="font-bold">{me.name}&apos;s estimated cost</p>
         <p className="mt-1 font-display text-6xl font-extrabold" aria-live="polite">{money(mine.total)}</p>
         <p className="mt-1 text-base font-semibold">{money(mine.confirmed)} confirmed · {money(mine.tentative)} tentative</p>

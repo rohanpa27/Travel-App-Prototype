@@ -14,6 +14,7 @@ import { TripCover } from "@/components/trip/TripCover";
 import { Countdown } from "@/components/trip/Countdown";
 import { ActivityCard } from "@/components/trip/ActivityCard";
 import { CostSummary } from "@/components/trip/CostSummary";
+import { TripStrip } from "@/components/trip/TripStrip";
 import { RecommendationCard } from "@/components/trip/RecommendationCard";
 import { EmptyState } from "@/components/trip/EmptyState";
 
@@ -38,11 +39,13 @@ export default function TripHome() {
       <h1 className="text-4xl font-extrabold md:text-5xl">Hey {me.name}, here&apos;s the plan so far.</h1>
 
       {people.length === 1 && (
-        <div className="flex flex-col items-start gap-3 rounded-card border-2 border-ink bg-sky/50 p-5 sm:flex-row sm:items-center sm:justify-between">
+        <div className="flex flex-col items-start gap-3 rounded-card border border-ink/15 bg-sky/50 p-5 sm:flex-row sm:items-center sm:justify-between">
           <p className="text-lg font-bold">Your trip is ready. Invite your friends to start voting.</p>
           <ButtonLink href={ROUTES.invite} variant="dark" size="sm">Preview the invitation</ButtonLink>
         </div>
       )}
+
+      <TripStrip />
 
       <div className="grid gap-8 lg:grid-cols-[1.4fr_1fr]">
         <div className="space-y-8">
